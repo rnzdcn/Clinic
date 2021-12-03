@@ -85,7 +85,6 @@ public class Inventory extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 700));
         setUndecorated(true);
         setSize(new java.awt.Dimension(1280, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -149,6 +148,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/InventoryIMG/addMedicine.png"))); // NOI18N
         jButton2.setText("Add Medicine");
+        jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -160,6 +160,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/InventoryIMG/viewMedicine.png"))); // NOI18N
         jButton1.setText("View Medicine");
+        jButton1.setBorder(null);
         jButton1.setMaximumSize(new java.awt.Dimension(143, 33));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +173,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton9.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/update.png"))); // NOI18N
         jButton9.setText("Update Medicine");
+        jButton9.setBorder(null);
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -183,6 +185,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/delete.png"))); // NOI18N
         jButton3.setText("Delete");
+        jButton3.setBorder(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -194,6 +197,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton6.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/back.png"))); // NOI18N
         jButton6.setText("Back");
+        jButton6.setBorder(null);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -205,6 +209,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
         jButton4.setText("Print");
+        jButton4.setBorder(null);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -229,6 +234,7 @@ public class Inventory extends javax.swing.JFrame {
         jButton7.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/refresh.png"))); // NOI18N
         jButton7.setText("Refresh");
+        jButton7.setBorder(null);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);

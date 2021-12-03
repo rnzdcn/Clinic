@@ -404,6 +404,7 @@ public class editPatients extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewClose.png"))); // NOI18N
         jButton3.setText("Close");
+        jButton3.setBorder(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -415,6 +416,7 @@ public class editPatients extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSAVE.png"))); // NOI18N
         jButton4.setText("Save");
+        jButton4.setBorder(null);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -542,7 +544,7 @@ public class editPatients extends javax.swing.JFrame {
             try {
                 // kulang pa sa tmp yung sa where para maedit kahit yung first column
 
-                sql = "update clinicmanagement.patients  set studentid=?,   firstname=?, lastname=? ,middlename=?,age=? ,gender=? , date=? ,contactnumber=? ,time=? ,bednumber=?, sick=? ,guardiannumber=? studentid=' " + tmp + " ' ";
+                sql = "update clinicmanagement.patients  set studentid=?, firstname=?, lastname=?, middlename=?, age=?, gender=?, date=?, contactnumber=?, time=?, bednumber=?, sick=?, guardiannumber=? where studentid='"+tmp+"'";
                 pst = conn.prepareStatement(sql);
 
                 pst.setInt(1, Integer.parseInt(editpatientstudID.getText()));
