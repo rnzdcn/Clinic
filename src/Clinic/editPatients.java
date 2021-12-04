@@ -6,6 +6,7 @@
 package Clinic;
 
 import static Clinic.viewpatientsInformation.tmp;
+import java.awt.Dialog;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -14,7 +15,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-public class editPatients extends javax.swing.JFrame {
+public class editPatients extends javax.swing.JDialog {
 
     Connection conn = null;
     ResultSet rs = null;
@@ -22,6 +23,7 @@ public class editPatients extends javax.swing.JFrame {
     static String tmp;
 
     public editPatients() {
+        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         initComponents();
         conn = connection.ConnecrDb();
         this.setLocationRelativeTo(null);
@@ -121,8 +123,11 @@ public class editPatients extends javax.swing.JFrame {
         ERemptysick = new javax.swing.JLabel();
         ERemptyguardian = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Update Student Record");
+        setLocationByPlatform(true);
         setUndecorated(true);
+        setResizable(false);
         setSize(new java.awt.Dimension(750, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -544,7 +549,7 @@ public class editPatients extends javax.swing.JFrame {
             try {
                 // kulang pa sa tmp yung sa where para maedit kahit yung first column
 
-                sql = "update clinicmanagement.patients  set studentid=?, firstname=?, lastname=?, middlename=?, age=?, gender=?, date=?, contactnumber=?, time=?, bednumber=?, sick=?, guardiannumber=? where studentid='"+tmp+"'";
+                sql = "update clinicmanagement.patients  set studentid=?, firstname=?, lastname=?, middlename=?, age=?, gender=?, date=?, contactnumber=?, time=?, bednumber=?, sick=?, guardiannumber=? where studentid='" + tmp + "'";
                 pst = conn.prepareStatement(sql);
 
                 pst.setInt(1, Integer.parseInt(editpatientstudID.getText()));
@@ -554,7 +559,7 @@ public class editPatients extends javax.swing.JFrame {
                 pst.setInt(5, Integer.parseInt(editpatientage.getText()));
                 pst.setString(6, editpatientgender.getSelectedItem().toString());
                 pst.setString(7, ((JTextField) editpatientdate.getDateEditor().getUiComponent()).getText());
-                 pst.setString(8, editpatientcontact.getText());
+                pst.setString(8, editpatientcontact.getText());
 //                pst.setInt(8, Integer.parseInt(editpatientcontact.getText()));
                 pst.setInt(9, Integer.parseInt(editpatienttime.getText()));
                 pst.setInt(10, Integer.parseInt(editpatientbed.getText()));

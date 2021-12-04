@@ -5,6 +5,7 @@
  */
 package Clinic;
 
+import java.awt.Dialog;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +17,7 @@ import javax.swing.JOptionPane;
  *
  * @author jomari
  */
-public class viewpatientsInformation extends javax.swing.JFrame {
+public class viewpatientsInformation extends javax.swing.JDialog {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null; 
@@ -26,6 +27,7 @@ public class viewpatientsInformation extends javax.swing.JFrame {
      * Creates new form viewpatientsInformation
      */
     public viewpatientsInformation() {
+         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         initComponents();
          this.setLocationRelativeTo(null);
         conn = connection.ConnecrDb();
@@ -121,8 +123,8 @@ public class viewpatientsInformation extends javax.swing.JFrame {
         viewpatientsick = new javax.swing.JLabel();
         viewpatientguardian = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        setResizable(false);
         setSize(new java.awt.Dimension(750, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -270,6 +272,7 @@ public class viewpatientsInformation extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
         jButton3.setText("Print");
+        jButton3.setBorder(null);
         jButton3.setPreferredSize(new java.awt.Dimension(89, 33));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,6 +287,7 @@ public class viewpatientsInformation extends javax.swing.JFrame {
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewClose.png"))); // NOI18N
         jButton4.setText("Close");
         jButton4.setToolTipText("");
+        jButton4.setBorder(null);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);

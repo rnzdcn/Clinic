@@ -7,6 +7,7 @@ package Clinic;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +22,7 @@ import javax.swing.JTextField;
  *
  * @author jomari
  */
-public class addnewPatients extends javax.swing.JFrame {
+public class addnewPatients extends javax.swing.JDialog {
 
     Connection conn = null;
     ResultSet rs = null;
@@ -30,6 +31,7 @@ public class addnewPatients extends javax.swing.JFrame {
     private Object arg0;
 
     public addnewPatients() {
+         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -94,9 +96,9 @@ public class addnewPatients extends javax.swing.JFrame {
         jLabel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255)));
         jLabel4.setOpaque(true);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("addNewPatientModal");
-        setUndecorated(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Add New Patients");
+        setResizable(false);
         setSize(new java.awt.Dimension(750, 500));
         setType(java.awt.Window.Type.POPUP);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
