@@ -6,30 +6,35 @@
 package Clinic;
 
 import static Clinic.viewpatientsInformation.tmp;
+import java.awt.Color;
+import java.awt.Dialog;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author jomari
  */
-public class viewMedicine extends javax.swing.JFrame {
+public class viewMedicine extends javax.swing.JDialog {
+
     Connection conn = null;
     ResultSet rs = null;
-    PreparedStatement pst = null; 
+    PreparedStatement pst = null;
     static String tmp;
+
     public viewMedicine() {
         initComponents();
         this.setLocationRelativeTo(null);
         conn = connection.ConnecrDb();
         String sql1 = "select * from clinicmanagement.inventory where id =?";
-        try{
+        try {
             pst = conn.prepareStatement(sql1);
-            pst.setString(1,tmp);
+            pst.setString(1, tmp);
             rs = pst.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String view1 = rs.getString("medicinename");
                 VMmedicine.setText(view1);
                 String view2 = rs.getString("quantity");
@@ -42,32 +47,32 @@ public class viewMedicine extends javax.swing.JFrame {
                 VMstatus.setText(view5);
                 String view6 = rs.getString("id");
                 VMidmedicine.setText(view6);
+                String view7 = rs.getString("description");
+                VMdescription.setText(view7);
 
-
-              
             }
-       }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null,"this Data is incomplete");
-        }
-         finally{
-            try{
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "this Data is incomplete");
+        } finally {
+            try {
                 rs.close();
-                pst.close();   
+                pst.close();
+            } catch (Exception e) {
+
             }
-            catch(Exception e){
-                
-            }
-        
+
         }
-        
-    
+
+        //for modal
+        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+
+        getRootPane().
+                setBorder(BorderFactory.createLineBorder(Color.WHITE));
     }
-    public static void setRow(String row){
+
+    public static void setRow(String row) {
         tmp = row;
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,9 +98,12 @@ public class viewMedicine extends javax.swing.JFrame {
         VMquantity = new javax.swing.JLabel();
         VMdateR = new javax.swing.JLabel();
         VMdateE = new javax.swing.JLabel();
+        VMdescription = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        AMdescriptionempty = new javax.swing.JLabel();
         VMstatus = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setSize(new java.awt.Dimension(750, 500));
         setType(java.awt.Window.Type.POPUP);
@@ -120,7 +128,7 @@ public class viewMedicine extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel5.setText("Medicine Name");
+        jLabel5.setText("Medicine Name:");
         jLabel5.setOpaque(true);
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 130, 30));
 
@@ -129,7 +137,7 @@ public class viewMedicine extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addMedicineIMG/addnewmedicineQuantity.png"))); // NOI18N
-        jLabel6.setText("Quantity");
+        jLabel6.setText("Quantity:");
         jLabel6.setOpaque(true);
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 130, 30));
 
@@ -138,7 +146,7 @@ public class viewMedicine extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addMedicineIMG/addnewmedicineDateR.png"))); // NOI18N
-        jLabel7.setText("Date Recieved");
+        jLabel7.setText("Date Recieved:");
         jLabel7.setOpaque(true);
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 170, 130, 30));
 
@@ -147,7 +155,7 @@ public class viewMedicine extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addMedicineIMG/addnewmedicineEDate.png"))); // NOI18N
-        jLabel8.setText("Expiration Date");
+        jLabel8.setText("Expiration Date:");
         jLabel8.setOpaque(true);
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, 130, 30));
 
@@ -156,7 +164,7 @@ public class viewMedicine extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addMedicineIMG/addnewmedicineStatus.png"))); // NOI18N
-        jLabel11.setText("Status");
+        jLabel11.setText("Status:");
         jLabel11.setOpaque(true);
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 270, 130, 30));
 
@@ -179,9 +187,9 @@ public class viewMedicine extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 330, 130, 40));
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 370, 130, 40));
 
-        VMidmedicine.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        VMidmedicine.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         VMidmedicine.setForeground(new java.awt.Color(255, 255, 255));
         VMidmedicine.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jPanel2.add(VMidmedicine, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 190, 30));
@@ -206,21 +214,39 @@ public class viewMedicine extends javax.swing.JFrame {
         VMdateE.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jPanel2.add(VMdateE, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 220, 190, 30));
 
+        VMdescription.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        VMdescription.setForeground(new java.awt.Color(255, 255, 255));
+        VMdescription.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(VMdescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 370, 30));
+
+        jLabel10.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel10.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSTUDID.png"))); // NOI18N
+        jLabel10.setText("Description");
+        jLabel10.setOpaque(true);
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 130, 30));
+
+        AMdescriptionempty.setFont(new java.awt.Font("Poppins", 2, 10)); // NOI18N
+        AMdescriptionempty.setForeground(new java.awt.Color(237, 74, 65));
+        jPanel2.add(AMdescriptionempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 190, 20));
+
         VMstatus.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         VMstatus.setForeground(new java.awt.Color(255, 255, 255));
         VMstatus.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jPanel2.add(VMstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 190, 30));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 750, 400));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 750, 430));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-         Inventory viewP = new Inventory();
-         viewP.setVisible(true);
-         setVisible(false);
+        Inventory viewP = new Inventory();
+        viewP.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -259,14 +285,17 @@ public class viewMedicine extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AMdescriptionempty;
     private javax.swing.JLabel VMdateE;
     private javax.swing.JLabel VMdateR;
+    private javax.swing.JLabel VMdescription;
     private javax.swing.JLabel VMidmedicine;
     private javax.swing.JLabel VMmedicine;
     private javax.swing.JLabel VMquantity;
     private javax.swing.JLabel VMstatus;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

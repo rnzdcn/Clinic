@@ -5,11 +5,13 @@
  */
 package Clinic;
 
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -30,10 +32,13 @@ public class updateAdmin extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         setTitle("Create Account");
         
+        getRootPane().
+            setBorder( BorderFactory.createLineBorder(Color.WHITE) );
+        
         initComponents();
         
         //Connection to database
-        conn = connection.ConnecrDb(); //marunong naman eh
+        conn = connection.ConnecrDb(); 
      
         String sql2 = "select * from clinicmanagement.admin where username = ?";
         try{
@@ -222,6 +227,9 @@ public class updateAdmin extends javax.swing.JDialog {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 EAfirstKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                EAfirstKeyTyped(evt);
+            }
         });
         jPanel1.add(EAfirst, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 190, 30));
 
@@ -239,6 +247,9 @@ public class updateAdmin extends javax.swing.JDialog {
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 EAlastKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                EAlastKeyTyped(evt);
             }
         });
         jPanel1.add(EAlast, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, 190, 30));
@@ -334,6 +345,7 @@ public class updateAdmin extends javax.swing.JDialog {
     private void EAeditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EAeditActionPerformed
         if (EAfirst.getText().trim().isEmpty() && EAlast.getText().trim().isEmpty() && EAuser.getText().trim().isEmpty()   &&  EApassword.getText().trim().isEmpty() && EAconfirm.getText().trim().isEmpty() 
               && EAcode.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter all details before proceeding");
             EAfirstempty.setText("fistname is empty");
             EAlastempty.setText("lastname is empty");
             EAuserempty.setText("username is empty");
@@ -355,7 +367,7 @@ public class updateAdmin extends javax.swing.JDialog {
             EAcodeempty.setText("code is empty");
         }else if(EApassword.getText().length()<5){
             JOptionPane.showMessageDialog(null, "password must be 6 character .");
-        }else if(EAuser.getText().length()<6){
+        }else if(EAuser.getText().length()<5){
             JOptionPane.showMessageDialog(null, "username must be 6 character .");
 
         } else {
@@ -424,74 +436,7 @@ public class updateAdmin extends javax.swing.JDialog {
     }//GEN-LAST:event_EAfirstActionPerformed
 
     private void EAfirstKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EAfirstKeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_A ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_B ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_C ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_D ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_E ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_F ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_G ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_H ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_I ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_J ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_K ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_L ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_M ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_N){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_O ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_P ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_Q ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_R ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_S ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_T ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_U ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_V ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_W ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_X ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_Y ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_Z ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_CAPS_LOCK ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_SHIFT ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_SPACE){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_ENTER ){
-        }
-
-        else{
-            JOptionPane.showMessageDialog(null, "Invalid Character.");
-            EAfirst.setText("");
-
-        }      // TODO add your handling code here:
+        // TODO add your handling code here:
 
     }//GEN-LAST:event_EAfirstKeyReleased
 
@@ -500,75 +445,10 @@ public class updateAdmin extends javax.swing.JDialog {
     }//GEN-LAST:event_EAlastActionPerformed
 
     private void EAlastKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EAlastKeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_A ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_B ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_C ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_D ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_E ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_F ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_G ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_H ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_I ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_J ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_K ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_L ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_M ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_N){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_O ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_P ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_Q ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_R ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_S ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_T ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_U ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_V ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_W ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_X ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_Y ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_Z ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_CAPS_LOCK ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_SHIFT ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_SPACE){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE ){
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_ENTER ){
-        }
-
-        else{
-            JOptionPane.showMessageDialog(null, "Invalid Character.");
-            EAlast.setText("");
+       
 
             // TODO add your handling code here:
-        }
+        
     }//GEN-LAST:event_EAlastKeyReleased
 
     private void EAuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EAuserActionPerformed
@@ -612,6 +492,26 @@ public class updateAdmin extends javax.swing.JDialog {
     private void EAcodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EAcodeKeyPressed
         EAcodeempty.setText("");
     }//GEN-LAST:event_EAcodeKeyPressed
+
+    private void EAfirstKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EAfirstKeyTyped
+       //Letter only 
+        if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
+        evt.consume();
+      
+    } else if (EAfirst.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+    }
+    }//GEN-LAST:event_EAfirstKeyTyped
+
+    private void EAlastKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EAlastKeyTyped
+       //Letter only 
+        if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
+        evt.consume();
+       
+    } else if (EAlast.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+    }
+    }//GEN-LAST:event_EAlastKeyTyped
 
     /**
      * @param args the command line arguments

@@ -5,11 +5,17 @@
  */
 package Clinic;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -17,10 +23,12 @@ import net.proteanit.sql.DbUtils;
  * @author jomari
  */
 public class manageAdmin extends javax.swing.JFrame {
+
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
-    Statement st=null;
+    Statement st = null;
+
     /**
      * Creates new form manageAdmin
      */
@@ -29,10 +37,30 @@ public class manageAdmin extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         updateTable();
+
+        //cell not editable     
+        MAtable.setDefaultEditor(Object.class, null);
+        MAtable.getTableHeader().setDefaultRenderer(new HeaderColor());
     }
+
+    public class HeaderColor extends DefaultTableCellRenderer {
+
+        public HeaderColor() {
+            setOpaque(true);
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+            //table design
+            setFont(new Font("Poppins", Font.PLAIN, 12));
+            setBackground(new java.awt.Color(153, 255, 204));
+            return this;
+        }
+    }
+
     public void updateTable() {
         try {
-            String sql = "select * from clinicmanagement.admin";
+            String sql = "select username as 'USERNAME', firstname as 'FIRSTNAME', lastname as 'LASTNAME', password as 'PASSWORD', confirmpassword as 'STRING PASSWORD', code as 'PRIVATE KEY' from clinicmanagement.admin";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             MAtable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -52,7 +80,6 @@ public class manageAdmin extends javax.swing.JFrame {
         updateTable();
 
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,13 +121,13 @@ public class manageAdmin extends javax.swing.JFrame {
         jButton8.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/mainLogout.png"))); // NOI18N
         jButton8.setText("LogOut");
-        jButton8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jButton8.setBorder(null);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 30, -1, -1));
+        jPanel4.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 30, 120, 40));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 100));
 
@@ -108,65 +135,126 @@ public class manageAdmin extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/addAdmin.png"))); // NOI18N
         jButton2.setText("Add Admin");
+        jButton2.setBorder(null);
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton2MouseExited(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 230, 40));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 230, 50));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton9.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/update.png"))); // NOI18N
         jButton9.setText("Update Admin");
+        jButton9.setBorder(null);
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton9MouseExited(evt);
+            }
+        });
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 230, 40));
+        jPanel1.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 230, 50));
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton5.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/delete.png"))); // NOI18N
         jButton5.setText("Delete");
+        jButton5.setBorder(null);
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton5MouseExited(evt);
+            }
+        });
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 230, 40));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 230, 50));
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton7.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/back.png"))); // NOI18N
         jButton7.setText("Back");
+        jButton7.setBorder(null);
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton7MouseExited(evt);
+            }
+        });
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 230, 40));
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 230, 50));
 
+        MAtable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         MAtable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "USERNAME", "FIRSTNAME", "LASTNAME", "PASSWORD", "STRING PASSWORD", "PRIVATE KEY"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        MAtable.setFillsViewportHeight(true);
         MAtable.setPreferredSize(new java.awt.Dimension(375, 128));
         MAtable.setRowHeight(32);
+        MAtable.setSelectionBackground(new java.awt.Color(87, 191, 109));
+        MAtable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        MAtable.setShowGrid(true);
+        MAtable.getTableHeader().setResizingAllowed(false);
+        MAtable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(MAtable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 980, 540));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 60, 980, 500));
 
         jLabel2.setBackground(new java.awt.Color(10, 46, 54));
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
@@ -185,7 +273,12 @@ public class manageAdmin extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         new register().setVisible(true);
+        // this.setEnabled(false);
+        register s = new register();
+        s.setVisible(true);
+        setVisible(false);
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -202,23 +295,24 @@ public class manageAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-          try {
+        try {
             int selectedRow = MAtable.getSelectedRow();
             String tmp = (MAtable.getValueAt(selectedRow, 0).toString());
-            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.YES_NO_OPTION);
+//            int option = JOptionPane.showMessageDialog(jFrame, MAtable, tmp, HEIGHT);
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
             if (option == JOptionPane.YES_OPTION) {
                 String sql = "Delete from clinicmanagement.admin where username = ?";
                 pst = conn.prepareStatement(sql);
                 pst.setString(1, tmp);
                 pst.execute();
                 updateTable();
-                JOptionPane.showMessageDialog(null, "Record deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "The account has been removed", "Deleted", JOptionPane.INFORMATION_MESSAGE);
                 rs.close();
                 pst.close();
 
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(null, "Please select an account", "Errpr", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select an account", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -227,16 +321,66 @@ public class manageAdmin extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         Menu c = new Menu();
         c.setVisible(true);
-        setVisible(false);                      
-              
+        setVisible(false);
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        logout c = new logout();
-        c.setVisible(true);
-        setVisible(false);
+     int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?","Confirm",
+                JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
+        if(response==JOptionPane.YES_OPTION){
+            new signup().setVisible(true);
+            dispose();
+        }
 
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
+        jButton2.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton2);
+    }//GEN-LAST:event_jButton2MouseEntered
+
+    private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
+        onLeaveClick(jButton2);
+        jButton2.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton2MouseExited
+
+    private void jButton9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseEntered
+        jButton9.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton9);
+    }//GEN-LAST:event_jButton9MouseEntered
+
+    private void jButton9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseExited
+        onLeaveClick(jButton9);
+        jButton9.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton9MouseExited
+
+    private void jButton5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseEntered
+        jButton5.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton5);
+    }//GEN-LAST:event_jButton5MouseEntered
+
+    private void jButton5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseExited
+        onLeaveClick(jButton5);
+        jButton5.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton5MouseExited
+
+    private void jButton7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseEntered
+        jButton7.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton7);
+    }//GEN-LAST:event_jButton7MouseEntered
+
+    private void jButton7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseExited
+        onLeaveClick(jButton7);
+        jButton7.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton7MouseExited
+    private void onClick(JButton button) {
+        button.setBackground(new Color(87, 191, 109));
+    }
+
+    private void onLeaveClick(JButton button) {
+        button.setBackground(Color.white);
+    }
 
     /**
      * @param args the command line arguments

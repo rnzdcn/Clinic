@@ -5,11 +5,13 @@
  */
 package Clinic;
 
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,23 +19,27 @@ import javax.swing.JOptionPane;
  * @author jomari
  */
 public class register extends javax.swing.JDialog {
-    
+
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
+
     /**
      * Creates new form register
      */
     public register() {
         //for modal
+
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-//        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         initComponents();
         //Connection
         conn = connection.ConnecrDb();
         this.setLocationRelativeTo(null);
         setTitle("Create Account");
-            
+
+        getRootPane().
+                setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
     }
 
     /**
@@ -71,12 +77,14 @@ public class register extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
         setSize(new java.awt.Dimension(750, 500));
         setType(java.awt.Window.Type.POPUP);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(10, 46, 54));
+        jPanel1.setFocusable(false);
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setBackground(new java.awt.Color(10, 46, 54));
@@ -172,6 +180,7 @@ public class register extends javax.swing.JDialog {
         });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 120, 40));
 
+        CRfirstname.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         CRfirstname.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CRfirstname.setPreferredSize(new java.awt.Dimension(60, 20));
         CRfirstname.addActionListener(new java.awt.event.ActionListener() {
@@ -180,12 +189,19 @@ public class register extends javax.swing.JDialog {
             }
         });
         CRfirstname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CRfirstnameKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CRfirstnameKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CRfirstnameKeyTyped(evt);
             }
         });
         jPanel1.add(CRfirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 190, 30));
 
+        CRlastname.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         CRlastname.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CRlastname.setPreferredSize(new java.awt.Dimension(60, 20));
         CRlastname.addActionListener(new java.awt.event.ActionListener() {
@@ -194,12 +210,19 @@ public class register extends javax.swing.JDialog {
             }
         });
         CRlastname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CRlastnameKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CRlastnameKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CRlastnameKeyTyped(evt);
             }
         });
         jPanel1.add(CRlastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, 190, 30));
 
+        CRusername.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         CRusername.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CRusername.setPreferredSize(new java.awt.Dimension(60, 20));
         CRusername.addActionListener(new java.awt.event.ActionListener() {
@@ -207,28 +230,47 @@ public class register extends javax.swing.JDialog {
                 CRusernameActionPerformed(evt);
             }
         });
+        CRusername.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CRusernameKeyPressed(evt);
+            }
+        });
         jPanel1.add(CRusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 190, 30));
 
+        CRpassword.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         CRpassword.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CRpassword.setPreferredSize(new java.awt.Dimension(60, 20));
         CRpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CRpasswordKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CRpasswordKeyReleased(evt);
             }
         });
         jPanel1.add(CRpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 170, 190, 30));
 
+        CRconfirmpassword.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         CRconfirmpassword.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CRconfirmpassword.setPreferredSize(new java.awt.Dimension(60, 20));
         CRconfirmpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CRconfirmpasswordKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CRconfirmpasswordKeyReleased(evt);
             }
         });
         jPanel1.add(CRconfirmpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 220, 190, 30));
 
+        CRcode.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         CRcode.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CRcode.setPreferredSize(new java.awt.Dimension(60, 20));
+        CRcode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CRcodeKeyPressed(evt);
+            }
+        });
         jPanel1.add(CRcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, 190, 30));
 
         CRuserempty.setFont(new java.awt.Font("Poppins", 2, 10)); // NOI18N
@@ -265,7 +307,7 @@ public class register extends javax.swing.JDialog {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/RegisterIMG/nurseadminn.png"))); // NOI18N
         jLabel1.setText("Create Admin");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, 330, 60));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 380, 60));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 100));
 
@@ -275,105 +317,98 @@ public class register extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         manageAdmin s = new manageAdmin();
-        s.setVisible(false);
-        setVisible(false); 
-    
+        s.setVisible(true);
+        setVisible(false);
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-     if (CRfirstname.getText().trim().isEmpty() && CRlastname.getText().trim().isEmpty() && CRusername.getText().trim().isEmpty()   &&  CRpassword.getText().trim().isEmpty() && CRconfirmpassword.getText().trim().isEmpty() && CRcode
-             .getText().trim().isEmpty()) {
+        if (CRfirstname.getText().trim().isEmpty() && CRlastname.getText().trim().isEmpty() && CRusername.getText().trim().isEmpty() && CRpassword.getText().trim().isEmpty() && CRconfirmpassword.getText().trim().isEmpty() && CRcode
+                .getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Enter all details before proceeding", "Error", JOptionPane.ERROR_MESSAGE);
             CRfirstempty.setText("fistname is empty");
             CRlastempty.setText("lastname is empty");
-             CRuserempty.setText("username is empty");
+            CRuserempty.setText("username is empty");
             CRpassempty.setText("password is empty");
-             CRconfirmempty.setText("confirm password is empty");
+            CRconfirmempty.setText("confirm password is empty");
             CRcodeempty.setText("code is empty");
-            
 
         } else if (CRfirstname.getText().trim().isEmpty()) {
             CRfirstempty.setText("fistname is empty");
-            } else if (CRlastname.getText().trim().isEmpty()) {
+        } else if (CRlastname.getText().trim().isEmpty()) {
             CRlastempty.setText("lastname is empty");
-            } else if (CRusername.getText().trim().isEmpty()) {
+        } else if (CRusername.getText().trim().isEmpty()) {
             CRuserempty.setText("username is empty");
         } else if (CRpassword.getText().trim().isEmpty()) {
             CRpassempty.setText("password is empty");
-            } else if (CRconfirmpassword.getText().trim().isEmpty()) {
+        } else if (CRconfirmpassword.getText().trim().isEmpty()) {
             CRconfirmempty.setText("confirm password is empty");
-            } else if (CRcode.getText().trim().isEmpty()) {
+        } else if (CRcode.getText().trim().isEmpty()) {
             CRcodeempty.setText("code is empty");
-            }else if(CRpassword.getText().length()<6){
-        JOptionPane.showMessageDialog(null, "password must be 6 character .");
-            }else if(CRusername.getText().length()<6){
-        JOptionPane.showMessageDialog(null, "username must be 6 character .");
-        
-            
+        } else if (CRpassword.getText().length() < 5) {
+            JOptionPane.showMessageDialog(null, "password must be 6 character .");
+        } else if (CRusername.getText().length() < 5) {
+            JOptionPane.showMessageDialog(null, "username must be 6 character .");
+
         } else {
-        String Pass = CRpassword.getText();
-        String Cpass = CRconfirmpassword.getText();
-        if(Pass.equals(Cpass)){
-        String sql2 = "Insert into clinicmanagement.admin (firstname,lastname,username,password,confirmpassword,code) values(?,?,?,?,?,?)";
-        try{
-        pst=conn.prepareStatement(sql2);
-                
-                pst.setString(1, CRfirstname.getText());
-                pst.setString(2, CRlastname.getText());
-                pst.setString(3, CRusername.getText());
-                pst.setString(4, CRpassword.getText());
-                pst.setString(5,  CRconfirmpassword.getText());
-                pst.setString(6, CRcode.getText());
-                pst.execute();
-                         
-                JOptionPane.showMessageDialog(null,"Registration Success");
-               new manageAdmin().setVisible(true);
-              setVisible(false);
-              
-         }
-        catch(Exception e)
-        {
-         
-            JOptionPane.showMessageDialog(null,"username is already used");
-            CRusername.setText("");
-        }
-         finally{
-            try{
-                rs.close();
-                pst.close();   
+            String Pass = CRpassword.getText();
+            String Cpass = CRconfirmpassword.getText();
+            if (Pass.equals(Cpass)) {
+                String sql2 = "Insert into clinicmanagement.admin (firstname,lastname,username,password,confirmpassword,code) values(?,?,?,?,?,?)";
+                try {
+                    pst = conn.prepareStatement(sql2);
+
+                    pst.setString(1, CRfirstname.getText());
+                    pst.setString(2, CRlastname.getText());
+                    pst.setString(3, CRusername.getText());
+                    pst.setString(4, CRpassword.getText());
+                    pst.setString(5, CRconfirmpassword.getText());
+                    pst.setString(6, CRcode.getText());
+                    pst.execute();
+
+                    JOptionPane.showMessageDialog(null, "A new account has been created.");
+                    manageAdmin s = new manageAdmin();
+                    s.setVisible(true);
+                    setVisible(false);
+
+                } catch (Exception e) {
+
+                    JOptionPane.showMessageDialog(null, "username is already used");
+                    CRusername.setText("");
+                } finally {
+                    try {
+                        rs.close();
+                        pst.close();
+                    } catch (Exception e) {
+
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Passwords does not match.");
+
             }
-            catch(Exception e){
-                
-            }
         }
-   
-        }
-        
-        else
-        {
-            JOptionPane.showMessageDialog(null,"Passwords does not match.");
-        
-        
-        }
-            }
-            
+
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    CRfirstname.setText(""); 
-    CRlastname.setText("");
-    CRusername.setText("");
-    CRpassword.setText("");
-    CRconfirmpassword.setText("");
-    CRcode.setText("");
-    CRfirstname.requestFocus();
-    CRfirstempty.setText(""); 
-    CRlastempty.setText(""); 
-    CRuserempty.setText(""); 
-    CRpassempty.setText(""); 
-    CRconfirmempty.setText(""); 
-    CRcodeempty.setText(""); 
+        CRfirstname.setText("");
+        CRlastname.setText("");
+        CRusername.setText("");
+        CRpassword.setText("");
+        CRconfirmpassword.setText("");
+        CRcode.setText("");
+        CRfirstname.requestFocus();
+        CRfirstempty.setText("");
+        CRlastempty.setText("");
+        CRuserempty.setText("");
+        CRpassempty.setText("");
+        CRconfirmempty.setText("");
+        CRcodeempty.setText("");
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -390,164 +425,73 @@ public class register extends javax.swing.JDialog {
     }//GEN-LAST:event_CRusernameActionPerformed
 
     private void CRpasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRpasswordKeyReleased
-       if(CRpassword.getText().length()>15){
-        JOptionPane.showMessageDialog(null, "Password must be 15 characters only.");
+        if (CRpassword.getText().length() > 15) {
+            JOptionPane.showMessageDialog(null, "Password must be 15 characters only.");
         }
-                                  
+
 
     }//GEN-LAST:event_CRpasswordKeyReleased
 
     private void CRconfirmpasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRconfirmpasswordKeyReleased
-       if(CRconfirmpassword.getText().length()>15){
-        JOptionPane.showMessageDialog(null, "Password must be 15 characters only.");
+        if (CRconfirmpassword.getText().length() > 15) {
+            JOptionPane.showMessageDialog(null, "Password must be 15 characters only.");
         }
-                                   
+
 
     }//GEN-LAST:event_CRconfirmpasswordKeyReleased
 
     private void CRfirstnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRfirstnameKeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_A ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_B ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_C ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_D ){
-    }   
-            else if(evt.getKeyCode() == KeyEvent.VK_E ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_F ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_G ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_H ){
-    }   
-            else if(evt.getKeyCode() == KeyEvent.VK_I ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_J ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_K ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_L ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_M ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_N){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_O ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_P ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_Q ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_R ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_S ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_T ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_U ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_V ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_W ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_X ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_Y ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_Z ){
-    }
-              else if(evt.getKeyCode() == KeyEvent.VK_CAPS_LOCK ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_SHIFT ){
-    }
-              else if(evt.getKeyCode() == KeyEvent.VK_SPACE){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_ENTER ){
-    }
-      
-            else{
-            JOptionPane.showMessageDialog(null, "Invalid Character.");
-               CRfirstname.setText("");
-               
-                }        // TODO add your handling code here:
-                    
+
+
     }//GEN-LAST:event_CRfirstnameKeyReleased
 
     private void CRlastnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRlastnameKeyReleased
-       if(evt.getKeyCode() == KeyEvent.VK_A ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_B ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_C ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_D ){
-    }   
-            else if(evt.getKeyCode() == KeyEvent.VK_E ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_F ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_G ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_H ){
-    }   
-            else if(evt.getKeyCode() == KeyEvent.VK_I ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_J ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_K ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_L ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_M ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_N){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_O ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_P ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_Q ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_R ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_S ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_T ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_U ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_V ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_W ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_X ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_Y ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_Z ){
-    }
-              else if(evt.getKeyCode() == KeyEvent.VK_CAPS_LOCK ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_SHIFT ){
-    }
-              else if(evt.getKeyCode() == KeyEvent.VK_SPACE){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE ){
-    }
-            else if(evt.getKeyCode() == KeyEvent.VK_ENTER ){
-    }
-      
-            else{
-            JOptionPane.showMessageDialog(null, "Invalid Character.");
-               CRlastname.setText("");
-               
-                  // TODO add your handling code here:
-    }                 
+
     }//GEN-LAST:event_CRlastnameKeyReleased
+
+    private void CRfirstnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRfirstnameKeyPressed
+        CRfirstempty.setText("");
+
+    }//GEN-LAST:event_CRfirstnameKeyPressed
+
+    private void CRlastnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRlastnameKeyPressed
+        CRlastempty.setText("");
+    }//GEN-LAST:event_CRlastnameKeyPressed
+
+    private void CRusernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRusernameKeyPressed
+        CRuserempty.setText("");
+    }//GEN-LAST:event_CRusernameKeyPressed
+
+    private void CRpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRpasswordKeyPressed
+        CRpassempty.setText("");
+    }//GEN-LAST:event_CRpasswordKeyPressed
+
+    private void CRconfirmpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRconfirmpasswordKeyPressed
+        CRconfirmempty.setText("");
+    }//GEN-LAST:event_CRconfirmpasswordKeyPressed
+
+    private void CRcodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRcodeKeyPressed
+        CRcodeempty.setText("");
+    }//GEN-LAST:event_CRcodeKeyPressed
+
+    private void CRfirstnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRfirstnameKeyTyped
+        //Letter only 
+        if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
+            evt.consume();
+
+        } else if (CRfirstname.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+        }
+    }//GEN-LAST:event_CRfirstnameKeyTyped
+
+    private void CRlastnameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CRlastnameKeyTyped
+        if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
+            evt.consume();
+
+        } else if (CRlastname.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+        }
+    }//GEN-LAST:event_CRlastnameKeyTyped
 
     /**
      * @param args the command line arguments

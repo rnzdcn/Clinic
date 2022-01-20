@@ -5,38 +5,50 @@
  */
 package Clinic;
 
+import static Clinic.Inventory.Itable;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.MessageFormat;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
  * @author jomari
  */
 public class viewpatientsInformation extends javax.swing.JDialog {
+
     Connection conn = null;
     ResultSet rs = null;
-    PreparedStatement pst = null; 
+    PreparedStatement pst = null;
     static String tmp;
-  
+
     /**
      * Creates new form viewpatientsInformation
      */
     public viewpatientsInformation() {
-         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         initComponents();
-         this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
         conn = connection.ConnecrDb();
         String sql5 = "select * from clinicmanagement.patients where studentid =?";
-        try{
+        try {
             pst = conn.prepareStatement(sql5);
-            pst.setString(1,tmp);
+            pst.setString(1, tmp);
             rs = pst.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String view1 = rs.getString("studentid");
                 viewpatientstudid.setText(view1);
                 String view2 = rs.getString("firstname");
@@ -61,26 +73,84 @@ public class viewpatientsInformation extends javax.swing.JDialog {
                 viewpatientsick.setText(view11);
                 String view12 = rs.getString("guardiannumber");
                 viewpatientguardian.setText(view12);
-              
+
             }
-       }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null,"this Data is incomplete");
-        }
-         finally{
-            try{
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "this Data is incomplete");
+        } finally {
+            try {
                 rs.close();
-                pst.close();   
+                pst.close();
+            } catch (Exception e) {
+
             }
-            catch(Exception e){
-                
-            }
-        
+
         }
-        
-    
+
+//for modal
+        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+
+        getRootPane().
+                setBorder(BorderFactory.createLineBorder(Color.WHITE));
     }
-    public static void setRow(String row){
+
+    public void printComponent(Component component) {
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setJobName(" Print Component ");
+
+        pj.setPrintable(new Printable() {
+            public int print(Graphics pg, PageFormat pf, int pageNum) {
+                if (pageNum > 0) {
+                    return Printable.NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2 = (Graphics2D) pg;
+                g2.translate(pf.getImageableX(), pf.getImageableY());
+                component.print(g2);
+                return Printable.PAGE_EXISTS;
+            }
+        });
+        if (pj.printDialog() == false) {
+            return;
+        }
+
+        try {
+            pj.print();
+        } catch (PrinterException ex) {
+            // handle exception
+        }
+    }
+    public void printComponent() {
+
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setJobName(" Patients Information ");
+
+        pj.setPrintable(new Printable() {
+            
+            public int print(Graphics pg, PageFormat pf, int pageNum) {
+                if (pageNum > 0) {
+                    return Printable.NO_SUCH_PAGE;
+                }
+                Graphics2D g2 = (Graphics2D) pg;
+                g2.scale(pf.getImageableWidth()/jPanel2.getWidth(), pf.getImageableHeight()/jPanel2.getHeight());
+                g2.translate(pf.getImageableX(), pf.getImageableY());
+                jPanel2.print(g2);
+                return Printable.PAGE_EXISTS;
+            }
+        });
+
+        if (pj.printDialog() == false) {
+            return;
+        }
+
+        try {
+            pj.print();
+        } catch (PrinterException ex) {
+            // handle exception
+        }
+    }
+
+    public static void setRow(String row) {
         tmp = row;
     }
 
@@ -123,9 +193,10 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         viewpatientsick = new javax.swing.JLabel();
         viewpatientguardian = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
-        setResizable(false);
         setSize(new java.awt.Dimension(750, 500));
+        setType(java.awt.Window.Type.POPUP);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(87, 191, 109));
@@ -165,7 +236,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSTUDID.png"))); // NOI18N
-        jLabel5.setText("Student ID");
+        jLabel5.setText("Student ID:");
         jLabel5.setOpaque(true);
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 130, 30));
 
@@ -174,7 +245,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewFIRST.png"))); // NOI18N
-        jLabel6.setText("First Name");
+        jLabel6.setText("First Name:");
         jLabel6.setOpaque(true);
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 130, 30));
 
@@ -183,7 +254,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewLAST.png"))); // NOI18N
-        jLabel7.setText("Last Name");
+        jLabel7.setText("Last Name:");
         jLabel7.setOpaque(true);
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 130, 30));
 
@@ -192,7 +263,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewMIDDLE.png"))); // NOI18N
-        jLabel8.setText("Middle Name");
+        jLabel8.setText("Middle Name:");
         jLabel8.setOpaque(true);
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 130, 30));
 
@@ -201,7 +272,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewGENDER.png"))); // NOI18N
-        jLabel10.setText("Gender");
+        jLabel10.setText("Gender:");
         jLabel10.setOpaque(true);
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 130, 30));
 
@@ -210,7 +281,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewAGE.png"))); // NOI18N
-        jLabel11.setText("Age");
+        jLabel11.setText("Age:");
         jLabel11.setOpaque(true);
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 130, 30));
 
@@ -219,7 +290,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSICK.png"))); // NOI18N
-        jLabel12.setText("Sick/Illness");
+        jLabel12.setText("Sick/Illness:");
         jLabel12.setOpaque(true);
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 230, 130, 30));
 
@@ -228,7 +299,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewBED.png"))); // NOI18N
-        jLabel13.setText("Bed Number");
+        jLabel13.setText("Bed Number:");
         jLabel13.setOpaque(true);
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, 130, 30));
 
@@ -237,7 +308,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewGUARDIAN.png"))); // NOI18N
-        jLabel9.setText("Guardian Contact Number");
+        jLabel9.setText("Guardian Contact Number:");
         jLabel9.setOpaque(true);
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 210, 30));
 
@@ -246,7 +317,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewTIME.png"))); // NOI18N
-        jLabel14.setText("Time Admit");
+        jLabel14.setText("Time Admit:");
         jLabel14.setOpaque(true);
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, 130, 30));
 
@@ -255,7 +326,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewCONTACT.png"))); // NOI18N
-        jLabel15.setText("Contact Number");
+        jLabel15.setText("Contact Number:");
         jLabel15.setOpaque(true);
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 140, 30));
 
@@ -264,7 +335,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewCALENDAR.png"))); // NOI18N
-        jLabel16.setText("Date ");
+        jLabel16.setText("Date:");
         jLabel16.setOpaque(true);
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 130, 30));
 
@@ -273,7 +344,6 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
         jButton3.setText("Print");
         jButton3.setBorder(null);
-        jButton3.setPreferredSize(new java.awt.Dimension(89, 33));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -368,14 +438,16 @@ public class viewpatientsInformation extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+
+        printComponent();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         Main viewP = new Main();
         viewP.setVisible(true);
         setVisible(false);
-                                            
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

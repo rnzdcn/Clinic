@@ -5,23 +5,38 @@
  */
 package Clinic;
 
+import static Clinic.Menu.Mcalendar;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import net.proteanit.sql.DbUtils;
 
 public class Inventory extends javax.swing.JFrame {
+
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
-    Statement st=null;    
+    Statement st = null;
+
     /**
      * Creates new form Inventory
      */
@@ -30,16 +45,44 @@ public class Inventory extends javax.swing.JFrame {
         conn = connection.ConnecrDb();
 //        this.setLocationRelativeTo(null);
         updateTable();
+        equaldate();
         
-        //mali pa to
-    }
      
-     public void updateTable() {
+        //cell not-editable
+       Itable.setDefaultEditor(Object.class, null);
+      Itable.getTableHeader().setDefaultRenderer(new HeaderColor());
+        Itable.setRowHeight(30);
+        
+        Border line = BorderFactory.createLineBorder(Color.WHITE);
+        Border empty = new EmptyBorder(0, 20, 0, 0);
+        CompoundBorder border = new CompoundBorder(line, empty);
+        Isearch.setBorder(border);
+    
+    }
+    public class HeaderColor extends DefaultTableCellRenderer {
+      public HeaderColor() {
+            setOpaque(true);
+            
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+             //table design
+       setFont(new Font("Poppins", Font.PLAIN, 12));
+       setBackground(new java.awt.Color(153,255,204));
+           return this;
+       }
+        }
+    public void updateTable() {
+
         try {
-            String sql = "select * from clinicmanagement.inventory";
+
+            String sql = "select id as 'MEDICINE ID', medicinename as 'MEDICINE NAME', quantity as 'QUANTITY', daterecieved as 'RECIEVED DATE', "
+                    + "expirationdate as 'EXPIRATION DATE', description as 'DESCRIPTION', status as 'STATUS' from clinicmanagement.inventory";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             Itable.setModel(DbUtils.resultSetToTableModel(rs));
+            
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -57,7 +100,15 @@ public class Inventory extends javax.swing.JFrame {
 
     }
 
-
+    public void equaldate() {
+        String dateR = "update clinicmanagement.inventory set status= 'Not available' where expirationdate = CURDATE() || quantity=0";
+        try {
+            pst = conn.prepareStatement(dateR);
+            pst.executeUpdate(dateR);
+            updateTable();
+        } catch (Exception e) {
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,8 +122,6 @@ public class Inventory extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Itable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -83,6 +132,7 @@ public class Inventory extends javax.swing.JFrame {
         Isearch = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -104,36 +154,18 @@ public class Inventory extends javax.swing.JFrame {
         jButton8.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/mainLogout.png"))); // NOI18N
         jButton8.setText("LogOut");
-        jButton8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jButton8.setBorder(null);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 30, -1, -1));
+        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 30, 120, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 100));
 
         jPanel2.setBackground(new java.awt.Color(10, 46, 54));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Itable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Itable.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        Itable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Medicine Name", "Quanity", "Date Recieved", "Expiration Date", "Status"
-            }
-        ));
-        Itable.setRowHeight(32);
-        jScrollPane1.setViewportView(Itable);
-
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 980, 540));
 
         jLabel2.setBackground(new java.awt.Color(10, 46, 54));
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
@@ -145,79 +177,130 @@ public class Inventory extends javax.swing.JFrame {
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 230, 40));
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/InventoryIMG/addMedicine.png"))); // NOI18N
         jButton2.setText("Add Medicine");
         jButton2.setBorder(null);
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton2MouseExited(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 230, 40));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 230, 50));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/InventoryIMG/viewMedicine.png"))); // NOI18N
         jButton1.setText("View Medicine");
         jButton1.setBorder(null);
         jButton1.setMaximumSize(new java.awt.Dimension(143, 33));
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton1MouseExited(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 230, 40));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 230, 50));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton9.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/update.png"))); // NOI18N
         jButton9.setText("Update Medicine");
         jButton9.setBorder(null);
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton9MouseExited(evt);
+            }
+        });
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 230, 40));
+        jPanel2.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 230, 50));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/delete.png"))); // NOI18N
         jButton3.setText("Delete");
         jButton3.setBorder(null);
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton3MouseExited(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 230, 40));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 230, 50));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton6.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/back.png"))); // NOI18N
         jButton6.setText("Back");
         jButton6.setBorder(null);
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton6MouseExited(evt);
+            }
+        });
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 230, 40));
+        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 230, 50));
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton4.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
         jButton4.setText("Print");
         jButton4.setBorder(null);
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton4MouseExited(evt);
+            }
+        });
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 230, 40));
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 230, 50));
 
+        Isearch.setBackground(new java.awt.Color(10, 46, 54));
         Isearch.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        Isearch.setForeground(new java.awt.Color(255, 255, 255));
+        Isearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         Isearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IsearchActionPerformed(evt);
@@ -251,6 +334,47 @@ public class Inventory extends javax.swing.JFrame {
         jLabel4.setToolTipText("");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, 70, 30));
 
+        Itable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        Itable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "MEDICINE ID", "MEDICINE NAME", "QUANTITY", "RECIEVED DATE", "EXPIRATION DATE", "DESCRIPTION", "STATUS"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Itable.setFillsViewportHeight(true);
+        Itable.setRowHeight(32);
+        Itable.setSelectionBackground(new java.awt.Color(87, 191, 109));
+        Itable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        Itable.setShowGrid(true);
+        Itable.getTableHeader().setResizingAllowed(false);
+        Itable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(Itable);
+
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, 980, 500));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 1280, 600));
 
         pack();
@@ -259,13 +383,13 @@ public class Inventory extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new addnewMedicine().setVisible(true);
-        
+        addnewMedicine c = new addnewMedicine();
+        c.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-
             int selectedRow = Itable.getSelectedRow();
             String row = (Itable.getModel().getValueAt(selectedRow, 0).toString());
             viewMedicine.setRow(row);
@@ -274,9 +398,7 @@ public class Inventory extends javax.swing.JFrame {
             setVisible(false);
         } catch (ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, "Please select an account.", "Error", JOptionPane.WARNING_MESSAGE);
-
-        }                                      
-
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -293,36 +415,67 @@ public class Inventory extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            int selectedRow = Itable.getSelectedRow();
-            String tmp = (Itable.getValueAt(selectedRow, 0).toString());
-            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.YES_NO_OPTION);
-            if (option == JOptionPane.YES_OPTION) {
-                String sql = "Delete from clinicmanagement.inventory where medicinename = ?";
-                pst = conn.prepareStatement(sql);
-                pst.setString(1, tmp);
-                pst.execute();
-                updateTable();
-                JOptionPane.showMessageDialog(null, "Record deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                rs.close();
-                pst.close();
-
+//        try {
+//            int selectedRow = Itable.getSelectedRow();
+//           // String tmp1 = (Itable.getModel().getValueAt(selectedRow, 0).toString());  
+//           String tmp = (Itable.getValueAt(selectedRow, 0).toString());
+//            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.YES_NO_OPTION);
+//            if (option == JOptionPane.YES_OPTION) {
+//                String sql =  "Delete clinicmanagement.inventory where id = ?";                 
+//               pst = conn.prepareStatement(sql); 
+//               pst.setString(1, tmp);
+//            //   pst.setString(2, tmp1);
+//                pst.execute();
+//                updateTable();
+//                JOptionPane.showMessageDialog(null, "Record deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);                
+//                rs.close();
+//                pst.close();
+//            }
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            JOptionPane.showMessageDialog(null, "Please select an account", "Error", JOptionPane.WARNING_MESSAGE);
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+        try{
+        int row = Itable.getSelectedRow();
+        String cell = Itable.getModel().getValueAt(row, 0).toString();
+        int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+        if (option == JOptionPane.YES_OPTION) {
+     //   String sql1 ="Insert into clinicmanagement.zeroquantity  select * from  clinicmanagement.inventory where id =?;Delete from clinicmanagement.inventory where id=? ";
+      String sql ="Delete from clinicmanagement.inventory where id=? ";
+            pst=conn.prepareStatement(sql);
+            pst.setString(1, cell);
+          //  pst.setString(2, cell);
+            pst.executeUpdate();
+             JOptionPane.showMessageDialog(null, "Medicine was successfully removed", "Removed", JOptionPane.INFORMATION_MESSAGE);
+            updateTable();
+           
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(null, "Please select an account", "Errpr", JOptionPane.WARNING_MESSAGE);
-        } catch (Exception e) {
+        }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
+//        try {
+//        int row = Itable.getSelectedRow();
+//        String cell = Itable.getModel().getValueAt(row, 0).toString();
+//             String sql ="Delete from clinicmanagement.inventory where id='"+cell+"' ";
+//            
+//                pst = conn.prepareStatement(sql);       
+//                pst.execute(sql);
+//                updateTable();
+//                 } catch (Exception e) {
+//                     JOptionPane.showMessageDialog(null, e);
+//
+//            }                                             
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-         Menu c = new Menu();
+        Menu c = new Menu();
         c.setVisible(true);
-        setVisible(false);  
+        setVisible(false);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-         MessageFormat header = new MessageFormat("Cavite State University Silang Campus Student Clinic Patients Record.");
+        MessageFormat header = new MessageFormat("Cavite State University Silang Campus Student Clinic Patients Record.");
 
         MessageFormat footer = new MessageFormat("Page{10,number,integer}");
         try {
@@ -338,10 +491,14 @@ public class Inventory extends javax.swing.JFrame {
     }//GEN-LAST:event_IsearchActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-         updateTable();
+        DefaultTableModel table = (DefaultTableModel) Itable.getModel();
+
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
+        Itable.setRowSorter(tr);
+
         Isearch.setText("");
-                            
-                                 
+
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void IsearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IsearchKeyReleased
@@ -349,17 +506,86 @@ public class Inventory extends javax.swing.JFrame {
         String sea = Isearch.getText();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
         Itable.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(sea));
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + sea));
 
     }//GEN-LAST:event_IsearchKeyReleased
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        logout c = new logout();
-        c.setVisible(true);
-        setVisible(false);
-
+     int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?","Confirm",
+                JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
+        if(response==JOptionPane.YES_OPTION){
+            new signup().setVisible(true);
+            dispose();
+        }
+    
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
+       jButton2.setFont(new Font("Poppins", Font.PLAIN, 20));
+    onClick(jButton2);
+    }//GEN-LAST:event_jButton2MouseEntered
+
+    private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
+        onLeaveClick(jButton2);
+      jButton2.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton2MouseExited
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        jButton1.setFont(new Font("Poppins", Font.PLAIN, 20));
+    onClick(jButton1);
+    }//GEN-LAST:event_jButton1MouseEntered
+
+    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+        onLeaveClick(jButton1);
+      jButton1.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton1MouseExited
+
+    private void jButton9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseEntered
+        jButton9.setFont(new Font("Poppins", Font.PLAIN, 20));
+    onClick(jButton9);
+    }//GEN-LAST:event_jButton9MouseEntered
+
+    private void jButton9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseExited
+         onLeaveClick(jButton9);
+      jButton9.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton9MouseExited
+
+    private void jButton4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseEntered
+       jButton4.setFont(new Font("Poppins", Font.PLAIN, 20));
+    onClick(jButton4);
+    }//GEN-LAST:event_jButton4MouseEntered
+
+    private void jButton4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseExited
+        onLeaveClick(jButton4);
+      jButton4.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton4MouseExited
+
+    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
+       jButton3.setFont(new Font("Poppins", Font.PLAIN, 20));
+    onClick(jButton3);
+    }//GEN-LAST:event_jButton3MouseEntered
+
+    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+        onLeaveClick(jButton3);
+      jButton3.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton3MouseExited
+
+    private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
+        jButton6.setFont(new Font("Poppins", Font.PLAIN, 20));
+    onClick(jButton6);
+    }//GEN-LAST:event_jButton6MouseEntered
+
+    private void jButton6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseExited
+         onLeaveClick(jButton6);
+      jButton6.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton6MouseExited
+     private void onClick(JButton button) {
+        button.setBackground(new Color(87,191,109));
+    }
+
+    private void onLeaveClick(JButton button) {
+        button.setBackground(Color.white);
+    }
     /**
      * @param args the command line arguments
      */
@@ -397,7 +623,7 @@ public class Inventory extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Isearch;
-    private javax.swing.JTable Itable;
+    public static final javax.swing.JTable Itable = new javax.swing.JTable();
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -411,6 +637,6 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

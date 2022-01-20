@@ -5,15 +5,25 @@
  */
 package Clinic;
 
+import static Clinic.Inventory.Itable;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.MessageFormat;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import net.proteanit.sql.DbUtils;
@@ -40,26 +50,56 @@ public class Main extends javax.swing.JFrame {
         updateTable();
         setTitle("Patients Record - table");
         updateTable();
-        maintable.getColumnModel().getColumn(0).setPreferredWidth(900);
+
+        Border line = BorderFactory.createLineBorder(Color.WHITE);
+        Border empty = new EmptyBorder(0, 20, 0, 0);
+        CompoundBorder border = new CompoundBorder(line, empty);
+        search.setBorder(border);
+
+        //table columns
+        maintable.getColumnModel().getColumn(0).setPreferredWidth(880);
         maintable.getColumnModel().getColumn(1).setPreferredWidth(800);
         maintable.getColumnModel().getColumn(2).setPreferredWidth(880);
         maintable.getColumnModel().getColumn(3).setPreferredWidth(880);
-        maintable.getColumnModel().getColumn(4).setPreferredWidth(400);
-        maintable.getColumnModel().getColumn(5).setPreferredWidth(700);
+        maintable.getColumnModel().getColumn(4).setPreferredWidth(300);
+        maintable.getColumnModel().getColumn(5).setPreferredWidth(500);
         maintable.getColumnModel().getColumn(6).setPreferredWidth(880);
-        maintable.getColumnModel().getColumn(7).setPreferredWidth(880);
-        maintable.getColumnModel().getColumn(8).setPreferredWidth(700);
-        maintable.getColumnModel().getColumn(9).setPreferredWidth(550);
-        maintable.getColumnModel().getColumn(10).setPreferredWidth(700);
+        maintable.getColumnModel().getColumn(7).setPreferredWidth(1000);
+        maintable.getColumnModel().getColumn(8).setPreferredWidth(800);
+        maintable.getColumnModel().getColumn(9).setPreferredWidth(500);
+        maintable.getColumnModel().getColumn(10).setPreferredWidth(880);
         maintable.getColumnModel().getColumn(11).setPreferredWidth(1000);
 
+        //cell not editable     
+        maintable.setDefaultEditor(Object.class, null);
+        //header design
+        maintable.getTableHeader().setDefaultRenderer(new HeaderColor());
+        maintable.setRowHeight(32);
+
+    }
+
+    public class HeaderColor extends DefaultTableCellRenderer {
+
+        public HeaderColor() {
+            setOpaque(true);
+
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+            //table design
+            setFont(new Font("Poppins", Font.PLAIN, 12));
+            setBackground(new java.awt.Color(153, 255, 204));
+
+            return this;
+        }
     }
 
     public void updateTable() {
         try {
-//            String sql = "select * from clinicmanagement.patients";
-            String sql = "select studentid as 'Student ID', firstname as 'Firstname', lastname as 'Lastname', middlename as 'Middle name', age as 'Age', gender as 'Gender', date as 'Date', contactnumber as 'Contact No.', "
-                    + "time as 'Time Admit', bednumber as 'Bed No.', sick as 'Sick', guardiannumber as 'Guardian Contact No.' from clinicmanagement.patients";
+            // String sql = "select * from clinicmanagement.patients";
+            String sql = "select studentid as 'STUDENT ID', firstname as 'FIRSTNAME', lastname as 'LASTNAME', middlename as 'MIDDLENAME', age as 'AGE', gender as 'GENDER', date as 'DATE', contactnumber as 'CONTACT NO', "
+                    + "time as 'TIME ADMIT', bednumber as 'BED NO.', sick as 'SICK', guardiannumber as 'GUARDIAN CONTACT NO.' from clinicmanagement.patients";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             maintable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -93,8 +133,6 @@ public class Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         search = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        maintable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
@@ -106,6 +144,8 @@ public class Main extends javax.swing.JFrame {
         mainDelete = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        maintable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("patientInformation");
@@ -120,6 +160,7 @@ public class Main extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/refresh.png"))); // NOI18N
         jButton4.setText("Refresh");
+        jButton4.setBorder(null);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -127,6 +168,10 @@ public class Main extends javax.swing.JFrame {
         });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, 100, 30));
 
+        search.setBackground(new java.awt.Color(10, 46, 54));
+        search.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        search.setForeground(new java.awt.Color(255, 255, 255));
+        search.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchActionPerformed(evt);
@@ -139,46 +184,6 @@ public class Main extends javax.swing.JFrame {
         });
         jPanel1.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 110, 240, 30));
         search.getAccessibleContext().setAccessibleDescription("");
-
-        maintable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        maintable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Student ID", "Last Name", "First Name", "Middle Name", "Gender", "Year and Course Section", "Age", "Contact No.", "Date", "Time Admit", "Guardian Contact Number", "Bed Number"
-            }
-        ));
-        maintable.setPreferredSize(new java.awt.Dimension(375, 128));
-        maintable.setRowHeight(32);
-        jScrollPane2.setViewportView(maintable);
-        if (maintable.getColumnModel().getColumnCount() > 0) {
-            maintable.getColumnModel().getColumn(0).setResizable(false);
-            maintable.getColumnModel().getColumn(0).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(1).setResizable(false);
-            maintable.getColumnModel().getColumn(1).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(2).setResizable(false);
-            maintable.getColumnModel().getColumn(2).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(3).setResizable(false);
-            maintable.getColumnModel().getColumn(3).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(4).setResizable(false);
-            maintable.getColumnModel().getColumn(4).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(5).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(6).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(7).setResizable(false);
-            maintable.getColumnModel().getColumn(7).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(8).setResizable(false);
-            maintable.getColumnModel().getColumn(8).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(9).setPreferredWidth(150);
-            maintable.getColumnModel().getColumn(10).setResizable(false);
-            maintable.getColumnModel().getColumn(10).setPreferredWidth(200);
-            maintable.getColumnModel().getColumn(11).setPreferredWidth(150);
-        }
-
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 980, 540));
 
         jPanel3.setBackground(new java.awt.Color(87, 191, 109));
         jPanel3.setForeground(new java.awt.Color(204, 255, 255));
@@ -195,13 +200,13 @@ public class Main extends javax.swing.JFrame {
         jButton7.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/mainLogout.png"))); // NOI18N
         jButton7.setText("LogOut");
-        jButton7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jButton7.setBorder(null);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 30, -1, -1));
+        jPanel3.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 30, 120, 40));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 100));
 
@@ -215,76 +220,174 @@ public class Main extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 230, 40));
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/addpatients.png"))); // NOI18N
         jButton2.setText("Add new patients");
+        jButton2.setBorder(null);
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton2MouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton2MousePressed(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 230, 40));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 230, 50));
 
         mainView.setBackground(new java.awt.Color(255, 255, 255));
-        mainView.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        mainView.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         mainView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/viewinfo.png"))); // NOI18N
         mainView.setText("View information");
+        mainView.setBorder(null);
+        mainView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mainViewMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                mainViewMouseExited(evt);
+            }
+        });
         mainView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mainViewActionPerformed(evt);
             }
         });
-        jPanel1.add(mainView, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 230, 40));
+        jPanel1.add(mainView, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 230, 50));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
-        jButton9.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton9.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/update.png"))); // NOI18N
         jButton9.setText("Update Patient");
+        jButton9.setBorder(null);
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton9MouseExited(evt);
+            }
+        });
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 230, 40));
+        jPanel1.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 230, 50));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
         jButton3.setText("Print");
+        jButton3.setBorder(null);
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton3MouseExited(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 230, 40));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 230, 50));
 
         mainDelete.setBackground(new java.awt.Color(255, 255, 255));
-        mainDelete.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        mainDelete.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         mainDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/delete.png"))); // NOI18N
         mainDelete.setText("Delete");
+        mainDelete.setBorder(null);
+        mainDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mainDeleteMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                mainDeleteMouseExited(evt);
+            }
+        });
         mainDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mainDeleteActionPerformed(evt);
             }
         });
-        jPanel1.add(mainDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 230, 40));
+        jPanel1.add(mainDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 230, 50));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton6.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/back.png"))); // NOI18N
         jButton6.setText("Back");
+        jButton6.setBorder(null);
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton6MouseExited(evt);
+            }
+        });
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 610, 230, 40));
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 610, 230, 50));
 
         jLabel3.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/search.png"))); // NOI18N
         jLabel3.setText("Search");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 110, -1, 30));
+
+        maintable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        maintable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "STUDENT ID", "FIRSTNAME", "LASTNAME", "MIDDLENAME", "AGE", "GENDER", "DATE", "CONTACT NO", "TIME ADMIT", "BED NO", "SICK", "GUARDIAN CONTACT NO"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        maintable.setFillsViewportHeight(true);
+        maintable.setRowHeight(32);
+        maintable.setSelectionBackground(new java.awt.Color(87, 191, 109));
+        maintable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        maintable.setShowGrid(true);
+        maintable.getTableHeader().setResizingAllowed(false);
+        maintable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(maintable);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 980, 500));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 700));
 
@@ -310,11 +413,14 @@ public class Main extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
 
-        new addnewPatients().setVisible(true);
+        addnewPatients c = new addnewPatients();
+        c.setVisible(true);
+        setVisible(false);
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        MessageFormat header = new MessageFormat("Cavite State University Silang Campus Student Clinic Patients Record.");
+        MessageFormat header = new MessageFormat("Cavite State University - SC Student Clinic Patients Record.");
 
         MessageFormat footer = new MessageFormat("Page{10,number,integer}");
         try {
@@ -327,7 +433,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        updateTable();
+        DefaultTableModel table = (DefaultTableModel) maintable.getModel();
+
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
+        maintable.setRowSorter(tr);
+
         search.setText("");
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -363,20 +473,21 @@ public class Main extends javax.swing.JFrame {
         try {
             int selectedRow = maintable.getSelectedRow();
             String tmp = (maintable.getValueAt(selectedRow, 0).toString());
-            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
             if (option == JOptionPane.YES_OPTION) {
                 String sql = "Delete from clinicmanagement.patients where studentid = ?";
                 pst = conn.prepareStatement(sql);
                 pst.setString(1, tmp);
                 pst.execute();
+
                 updateTable();
-                JOptionPane.showMessageDialog(null, "Record deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Patient Record was successfully removed", "Remove", JOptionPane.INFORMATION_MESSAGE);
                 rs.close();
                 pst.close();
 
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(null, "Please select an account", "Errpr", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select an account", "Error", JOptionPane.WARNING_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -388,17 +499,97 @@ public class Main extends javax.swing.JFrame {
         String sea = search.getText();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
         maintable.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(sea));
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + sea));
 
     }//GEN-LAST:event_searchKeyReleased
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        logout c = new logout();
-        c.setVisible(true);
-        setVisible(false);
+       int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?","Confirm",
+                JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
+        if(response==JOptionPane.YES_OPTION){
+            new signup().setVisible(true);
+            dispose();
+        }
+//        this.toBack();
+//        logout l = new logout();
+//        l.setVisible(true);
+//        l.toFront();
 
 
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
+
+    }//GEN-LAST:event_jButton2MousePressed
+
+    private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
+        jButton2.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton2);
+
+
+    }//GEN-LAST:event_jButton2MouseEntered
+
+    private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
+        onLeaveClick(jButton2);
+        jButton2.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton2MouseExited
+
+    private void mainViewMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainViewMouseEntered
+        mainView.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(mainView);
+    }//GEN-LAST:event_mainViewMouseEntered
+
+    private void mainViewMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainViewMouseExited
+        onLeaveClick(mainView);
+        mainView.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_mainViewMouseExited
+
+    private void jButton9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseEntered
+        jButton9.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton9);
+    }//GEN-LAST:event_jButton9MouseEntered
+
+    private void jButton9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseExited
+        onLeaveClick(jButton9);
+        jButton9.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton9MouseExited
+
+    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
+        jButton3.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton3);
+    }//GEN-LAST:event_jButton3MouseEntered
+
+    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+        onLeaveClick(jButton3);
+        jButton3.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton3MouseExited
+
+    private void mainDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainDeleteMouseEntered
+        mainDelete.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(mainDelete);
+    }//GEN-LAST:event_mainDeleteMouseEntered
+
+    private void mainDeleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainDeleteMouseExited
+        onLeaveClick(mainDelete);
+        mainDelete.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_mainDeleteMouseExited
+
+    private void jButton6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseEntered
+        jButton6.setFont(new Font("Poppins", Font.PLAIN, 20));
+        onClick(jButton6);
+    }//GEN-LAST:event_jButton6MouseEntered
+
+    private void jButton6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseExited
+        onLeaveClick(jButton6);
+        jButton6.setFont(new Font("Poppins", Font.PLAIN, 14));
+    }//GEN-LAST:event_jButton6MouseExited
+    private void onClick(JButton button) {
+        button.setBackground(new Color(87, 191, 109));
+    }
+
+    private void onLeaveClick(JButton button) {
+        button.setBackground(Color.white);
+    }
 
     /**
      * @param args the command line arguments
@@ -447,7 +638,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mainDelete;
     private javax.swing.JButton mainView;
     private javax.swing.JTable maintable;

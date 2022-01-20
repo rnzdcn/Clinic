@@ -5,14 +5,23 @@
  */
 package Clinic;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.MessageFormat;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import net.proteanit.sql.DbUtils;
@@ -34,34 +43,50 @@ public class StudentMedicine extends javax.swing.JFrame {
         conn = connection.ConnecrDb();
         this.setLocationRelativeTo(null);
         updateTable();
-        updateTable1();
-    }
-     public void updateTable1() {
-        try {
-            String sql1 = "select medicinename,status  from clinicmanagement.inventory";
-            pst = conn.prepareStatement(sql1);
-            rs = pst.executeQuery();
-            LMtable.setModel(DbUtils.resultSetToTableModel(rs));
+      
+        //table columns
+        SMtable.getColumnModel().getColumn(0).setPreferredWidth(1100);
+        SMtable.getColumnModel().getColumn(1).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(2).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(3).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(4).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(5).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(6).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(7).setPreferredWidth(880);
+        SMtable.getColumnModel().getColumn(8).setPreferredWidth(600);
+        
+        
+         //cell not editable     
+        SMtable.setDefaultEditor(Object.class, null);
+        SMtable.getTableHeader().setDefaultRenderer(new HeaderColor());
+        SMtable.setRowHeight(30);
+        
+        Border line = BorderFactory.createLineBorder(Color.WHITE);
+        Border empty = new EmptyBorder(0, 20, 0, 0);
+        CompoundBorder border = new CompoundBorder(line, empty);
+        SMpatientrecord.setBorder(border);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                rs.close();
-                pst.close();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    public void update1() {
-        updateTable();
-
-    }
     
+    }
+    public class HeaderColor extends DefaultTableCellRenderer {
+      public HeaderColor() {
+            setOpaque(true);
+            
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+             //table design
+       setFont(new Font("Poppins", Font.PLAIN, 12));
+       setBackground(new java.awt.Color(153,255,204));
+           return this;
+       }
+        }
+     
      public void updateTable() {
         try {
-            String sql = "select * from clinicmanagement.studentmedicine";
+            String sql = "select studreportno as 'STUDENT REPORT NO.', studentid as 'STUDENT ID', firstname as 'FIRSTNAME', lastname as 'LASTNAME', date as 'DATE RECEIVED', time as 'TIME',"
+                    + "medicine as 'MEDICINE', description as 'DESCRIPTION', quantity as 'QUANTITY' from clinicmanagement.studentmedicine";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             SMtable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -98,24 +123,17 @@ public class StudentMedicine extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        LMtable = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         SMtable = new javax.swing.JTable();
-        LMsearch = new javax.swing.JTextField();
-        LMrefresh = new javax.swing.JButton();
         SMpatientrecord = new javax.swing.JTextField();
         jButton11 = new javax.swing.JButton();
-        jButton30 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
         jButton32 = new javax.swing.JButton();
         jButton33 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
         jButton34 = new javax.swing.JButton();
+        jButton35 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -155,64 +173,39 @@ public class StudentMedicine extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/medicinerecordheader.png"))); // NOI18N
-        jLabel1.setText("Medicine Record");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 430, 70));
+        jLabel1.setText("Student Medicine Record");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 550, 70));
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/mainLogout.png"))); // NOI18N
         jButton8.setText("LogOut");
-        jButton8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jButton8.setBorder(null);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 30, -1, -1));
+        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 30, 120, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 100));
 
         jPanel2.setBackground(new java.awt.Color(10, 46, 54));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        LMtable.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        LMtable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Medicine Name", "Status"
-            }
-        ));
-        LMtable.setRowHeight(32);
-        jScrollPane1.setViewportView(LMtable);
-
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 390, 980, 200));
-
-        jLabel2.setBackground(new java.awt.Color(87, 191, 109));
-        jLabel2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/managepatients.png"))); // NOI18N
-        jLabel2.setText("RECORD OF STUDENT ");
-        jLabel2.setOpaque(true);
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 980, 30));
-
-        jLabel3.setBackground(new java.awt.Color(87, 191, 109));
-        jLabel3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/managepatients.png"))); // NOI18N
-        jLabel3.setText("LIST OF MEDICINE");
-        jLabel3.setOpaque(true);
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 980, 30));
-
-        SMtable.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        SMtable.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         SMtable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -221,37 +214,29 @@ public class StudentMedicine extends javax.swing.JFrame {
             new String [] {
                 "Student ID", "First Name", "Last Name", "Date", "Time", "Medicine", "Description"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         SMtable.setRowHeight(32);
+        SMtable.setSelectionBackground(new java.awt.Color(87, 191, 109));
+        SMtable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        SMtable.setShowGrid(true);
+        SMtable.getTableHeader().setResizingAllowed(false);
+        SMtable.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(SMtable);
 
-        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 980, 200));
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, 980, 500));
 
-        LMsearch.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        LMsearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LMsearchActionPerformed(evt);
-            }
-        });
-        LMsearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                LMsearchKeyReleased(evt);
-            }
-        });
-        jPanel2.add(LMsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 320, 240, 30));
-
-        LMrefresh.setBackground(new java.awt.Color(255, 255, 255));
-        LMrefresh.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        LMrefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/refresh.png"))); // NOI18N
-        LMrefresh.setText("Refresh");
-        LMrefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LMrefreshActionPerformed(evt);
-            }
-        });
-        jPanel2.add(LMrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, 100, 30));
-
+        SMpatientrecord.setBackground(new java.awt.Color(10, 46, 54));
         SMpatientrecord.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        SMpatientrecord.setForeground(new java.awt.Color(255, 255, 255));
+        SMpatientrecord.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         SMpatientrecord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SMpatientrecordActionPerformed(evt);
@@ -268,33 +253,13 @@ public class StudentMedicine extends javax.swing.JFrame {
         jButton11.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/refresh.png"))); // NOI18N
         jButton11.setText("Refresh");
+        jButton11.setBorder(null);
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
             }
         });
         jPanel2.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 100, 30));
-
-        jButton30.setBackground(new java.awt.Color(255, 255, 255));
-        jButton30.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jButton30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/RegisterIMG/registerback.png"))); // NOI18N
-        jButton30.setText("BACK");
-        jButton30.setIconTextGap(0);
-        jButton30.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton30ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton30, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 230, 40));
-
-        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/search.png"))); // NOI18N
-        jLabel5.setText("Search");
-        jLabel5.setToolTipText("");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 320, 70, 30));
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
@@ -305,57 +270,118 @@ public class StudentMedicine extends javax.swing.JFrame {
         jLabel6.setToolTipText("");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, 70, 30));
 
-        jPanel3.setBackground(new java.awt.Color(87, 191, 109));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         jButton32.setBackground(new java.awt.Color(255, 255, 255));
-        jButton32.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton32.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/viewinfo.png"))); // NOI18N
-        jButton32.setText("ADD");
+        jButton32.setText("Add");
+        jButton32.setBorder(null);
+        jButton32.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton32MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton32MouseExited(evt);
+            }
+        });
         jButton32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton32ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 200, 30));
+        jPanel2.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 230, 50));
 
         jButton33.setBackground(new java.awt.Color(255, 255, 255));
-        jButton33.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton33.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/update.png"))); // NOI18N
-        jButton33.setText("UPDATE");
+        jButton33.setText("Update");
+        jButton33.setBorder(null);
         jButton33.setIconTextGap(2);
+        jButton33.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton33MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton33MouseExited(evt);
+            }
+        });
         jButton33.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton33ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton33, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 200, 30));
+        jPanel2.add(jButton33, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 230, 50));
 
         jButton27.setBackground(new java.awt.Color(255, 255, 255));
-        jButton27.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton27.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/delete.png"))); // NOI18N
-        jButton27.setText("DELETE");
+        jButton27.setText("Delete");
+        jButton27.setBorder(null);
         jButton27.setIconTextGap(0);
+        jButton27.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton27MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton27MouseExited(evt);
+            }
+        });
         jButton27.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton27ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 200, 30));
+        jPanel2.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 230, 50));
 
         jButton34.setBackground(new java.awt.Color(255, 255, 255));
-        jButton34.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jButton34.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
-        jButton34.setText("PRINT");
+        jButton34.setText("Print");
+        jButton34.setBorder(null);
         jButton34.setIconTextGap(0);
+        jButton34.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton34MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton34MouseExited(evt);
+            }
+        });
         jButton34.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton34ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton34, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 200, 30));
+        jPanel2.add(jButton34, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 230, 50));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 1220, 240));
+        jButton35.setBackground(new java.awt.Color(255, 255, 255));
+        jButton35.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        jButton35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/back.png"))); // NOI18N
+        jButton35.setText("Back");
+        jButton35.setBorder(null);
+        jButton35.setIconTextGap(0);
+        jButton35.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton35MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton35MouseExited(evt);
+            }
+        });
+        jButton35.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton35ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton35, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 230, 50));
+
+        jLabel3.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel3.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/managepatients.png"))); // NOI18N
+        jLabel3.setText("STUDENT RECORD");
+        jLabel3.setOpaque(true);
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 230, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 1280, 600));
 
@@ -372,13 +398,90 @@ public class StudentMedicine extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton31ActionPerformed
+
+    private void SMpatientrecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMpatientrecordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SMpatientrecordActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+         DefaultTableModel table = (DefaultTableModel) SMtable.getModel();
+   
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
+        SMtable.setRowSorter(tr);
+      
+        SMpatientrecord.setText("");
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void SMpatientrecordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SMpatientrecordKeyReleased
+         DefaultTableModel table = (DefaultTableModel) SMtable.getModel();
+        String sea = SMpatientrecord.getText();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
+        SMtable.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + sea));
+    }//GEN-LAST:event_SMpatientrecordKeyReleased
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+      int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?","Confirm",
+                JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
+        if(response==JOptionPane.YES_OPTION){
+            new signup().setVisible(true);
+            dispose();
+        }
+   
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
+        Menu m = new Menu();
+        m.setVisible(true);
+        setVisible(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton35ActionPerformed
+
+    private void jButton35MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton35MouseExited
+        onLeaveClick(jButton35);
+        jButton35.setFont(new Font("Poppins", Font.PLAIN, 14));
+        jButton35.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jButton35MouseExited
+
+    private void jButton35MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton35MouseEntered
+        jButton35.setFont(new Font("Poppins", Font.PLAIN, 20));
+        jButton35.setForeground(Color.WHITE);
+        onClick(jButton35);
+    }//GEN-LAST:event_jButton35MouseEntered
+
+    private void jButton34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton34ActionPerformed
+        MessageFormat header = new MessageFormat("Cavite State University Silang Campus Student Clinic Patients Record.");
+
+        MessageFormat footer = new MessageFormat("Page{10,number,integer}");
+        try {
+
+            SMtable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+        } catch (java.awt.print.PrinterException e) {
+            System.err.format("Cannot print %s%n", e.getMessage());
+        }
+    }//GEN-LAST:event_jButton34ActionPerformed
+
+    private void jButton34MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton34MouseExited
+        onLeaveClick(jButton34);
+        jButton34.setFont(new Font("Poppins", Font.PLAIN, 14));
+        jButton34.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jButton34MouseExited
+
+    private void jButton34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton34MouseEntered
+        jButton34.setFont(new Font("Poppins", Font.PLAIN, 20));
+        jButton34.setForeground(Color.BLACK);
+        onClick(jButton34);
+    }//GEN-LAST:event_jButton34MouseEntered
+
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         try {
             int selectedRow = SMtable.getSelectedRow();
             String tmp = (SMtable.getValueAt(selectedRow, 0).toString());
-            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Delete Record", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
             if (option == JOptionPane.YES_OPTION) {
-                String sql = "Delete from clinicmanagement.patients where studentid = ?";
+                String sql = "Delete from clinicmanagement.studentmedicine where studreportno = ?";
                 pst = conn.prepareStatement(sql);
                 pst.setString(1, tmp);
                 pst.execute();
@@ -393,29 +496,23 @@ public class StudentMedicine extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
-                                    
-                                        
+
     }//GEN-LAST:event_jButton27ActionPerformed
 
-    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
-            Menu m = new Menu();
-            m.setVisible(true);
-            setVisible(false); 
-    }//GEN-LAST:event_jButton30ActionPerformed
+    private void jButton27MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseExited
+        onLeaveClick(jButton27);
+        jButton27.setFont(new Font("Poppins", Font.PLAIN, 14));
+        jButton27.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jButton27MouseExited
 
-    private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton31ActionPerformed
-
-    private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
-            StudentMedicineADD m = new StudentMedicineADD();
-            m.setVisible(true);
-            setVisible(false); 
-
-    }//GEN-LAST:event_jButton32ActionPerformed
+    private void jButton27MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton27MouseEntered
+        jButton27.setFont(new Font("Poppins", Font.PLAIN, 20));
+        jButton27.setForeground(Color.BLACK);
+        onClick(jButton27);
+    }//GEN-LAST:event_jButton27MouseEntered
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-          try {
+        try {
             int selectedRow = SMtable.getSelectedRow();
             String row = (SMtable.getModel().getValueAt(selectedRow, 0).toString());
             studentmedicineUPDATE.setRow(row);
@@ -425,62 +522,45 @@ public class StudentMedicine extends javax.swing.JFrame {
         } catch (ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, "Please select an account.", "Error", JOptionPane.WARNING_MESSAGE);
         }
-                                                                   
+
     }//GEN-LAST:event_jButton33ActionPerformed
 
-    private void jButton34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton34ActionPerformed
-        MessageFormat header = new MessageFormat("Cavite State University Silang Campus Student Clinic Patients Record.");
+    private void jButton33MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton33MouseExited
+        onLeaveClick(jButton33);
+        jButton33.setFont(new Font("Poppins", Font.PLAIN, 14));
+        jButton33.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jButton33MouseExited
 
-        MessageFormat footer = new MessageFormat("Page{10,number,integer}");
-        try {
+    private void jButton33MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton33MouseEntered
+        jButton33.setFont(new Font("Poppins", Font.PLAIN, 20));
+        jButton33.setForeground(Color.BLACK);
+        onClick(jButton33);
+    }//GEN-LAST:event_jButton33MouseEntered
 
-            SMtable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-        } catch (java.awt.print.PrinterException e) {
-            System.err.format("Cannot print %s%n", e.getMessage());
-        }
-    }//GEN-LAST:event_jButton34ActionPerformed
-
-    private void LMsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMsearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LMsearchActionPerformed
-
-    private void LMrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMrefreshActionPerformed
-        updateTable();
-        LMsearch.setText("");                  
-    }//GEN-LAST:event_LMrefreshActionPerformed
-
-    private void SMpatientrecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMpatientrecordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SMpatientrecordActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        updateTable();
-        SMpatientrecord.setText("");
-    }//GEN-LAST:event_jButton11ActionPerformed
-
-    private void SMpatientrecordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SMpatientrecordKeyReleased
-         DefaultTableModel table = (DefaultTableModel) SMtable.getModel();
-        String sea = SMpatientrecord.getText();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
-        SMtable.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(sea));
-    }//GEN-LAST:event_SMpatientrecordKeyReleased
-
-    private void LMsearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LMsearchKeyReleased
-       DefaultTableModel table = (DefaultTableModel) LMtable.getModel();
-        String sea = LMsearch.getText();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
-        LMtable.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(sea));
-
-    }//GEN-LAST:event_LMsearchKeyReleased
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        logout c = new logout();
-        c.setVisible(true);
+    private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
+        StudentMedicineADD m = new StudentMedicineADD();
+        m.setVisible(true);
         setVisible(false);
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_jButton32ActionPerformed
 
+    private void jButton32MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton32MouseExited
+        onLeaveClick(jButton32);
+        jButton32.setFont(new Font("Poppins", Font.PLAIN, 14));
+        jButton32.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jButton32MouseExited
+
+    private void jButton32MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton32MouseEntered
+        jButton32.setFont(new Font("Poppins", Font.PLAIN, 20));
+        jButton32.setForeground(Color.BLACK);
+        onClick(jButton32);
+    }//GEN-LAST:event_jButton32MouseEntered
+     private void onClick(JButton button) {
+        button.setBackground(new Color(87, 191, 109));
+    }
+
+    private void onLeaveClick(JButton button) {
+        button.setBackground(Color.white);
+    }
     /**
      * @param args the command line arguments
      */
@@ -518,30 +598,23 @@ public class StudentMedicine extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton LMrefresh;
-    private javax.swing.JTextField LMsearch;
-    private javax.swing.JTable LMtable;
     private javax.swing.JTextField SMpatientrecord;
     private javax.swing.JTable SMtable;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton27;
-    private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton34;
+    private javax.swing.JButton jButton35;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;

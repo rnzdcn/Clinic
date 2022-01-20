@@ -6,10 +6,17 @@
 package Clinic;
 
 import static Clinic.editPatients.tmp;
+import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -17,24 +24,28 @@ import javax.swing.JTextField;
  *
  * @author jomari
  */
-public class updateMedicine extends javax.swing.JFrame {
+public class updateMedicine extends javax.swing.JDialog {
+
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
     static String tmp;
+
     /**
      * Creates new form updateMedicine
      */
     public updateMedicine() {
         initComponents();
         conn = connection.ConnecrDb();
+        UMdateE.getCalendar();
+        UMdateE.setMinSelectableDate(new java.util.Date());
         this.setLocationRelativeTo(null);
         String sql2 = "select * from clinicmanagement.inventory where id =?";
-        try{
+        try {
             pst = conn.prepareStatement(sql2);
-            pst.setString(1,tmp);
+            pst.setString(1, tmp);
             rs = pst.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String edit6 = rs.getString("id");
                 UMidmedicine.setText(edit6);
                 String edit1 = rs.getString("medicinename");
@@ -45,31 +56,32 @@ public class updateMedicine extends javax.swing.JFrame {
                 UMdateR.setDate(edit3);
                 Date edit4 = rs.getDate("expirationdate");
                 UMdateE.setDate(edit4);
-                String edit5 = rs.getString("status");
-                UMstatus.setSelectedItem(edit5);
-                
-  
+                String edit5 = rs.getString("description");
+                UMdescription.setText(edit5);
+
             }
-       }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null,"this Data is incomplete");
-        }
-         finally{
-            try{
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "this Data is incomplete");
+        } finally {
+            try {
                 rs.close();
-                pst.close();   
+                pst.close();
+            } catch (Exception e) {
+
             }
-            catch(Exception e){
-                
-            }
-        
+
         }
-        
-    
+        //for modal
+        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+
+        getRootPane().
+                setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
     }
-    public static void setRow(String row){
+
+    public static void setRow(String row) {
         tmp = row;
-    
+
     }
 
     /**
@@ -90,21 +102,23 @@ public class updateMedicine extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        UMstatus = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         UMmedicineempty = new javax.swing.JLabel();
         UMquantityempty = new javax.swing.JLabel();
         UMdateRempty = new javax.swing.JLabel();
         UMdateEempty = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        UMidmedicine = new javax.swing.JTextField();
         UMdateR = new com.toedter.calendar.JDateChooser();
         UMdateE = new com.toedter.calendar.JDateChooser();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        UMdescription = new javax.swing.JTextArea();
+        UMdescriptionempty = new javax.swing.JLabel();
+        UMidmedicine = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -143,6 +157,12 @@ public class updateMedicine extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 UMmedicineKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                UMmedicineKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                UMmedicineKeyTyped(evt);
+            }
         });
         jPanel2.add(UMmedicine, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, 190, 30));
 
@@ -157,6 +177,12 @@ public class updateMedicine extends javax.swing.JFrame {
         UMquantity.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 UMquantityKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                UMquantityKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                UMquantityKeyTyped(evt);
             }
         });
         jPanel2.add(UMquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 190, 30));
@@ -188,15 +214,6 @@ public class updateMedicine extends javax.swing.JFrame {
         jLabel8.setOpaque(true);
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, 160, 30));
 
-        jLabel11.setBackground(new java.awt.Color(10, 46, 54));
-        jLabel11.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addMedicineIMG/addnewmedicineStatus.png"))); // NOI18N
-        jLabel11.setText("Status");
-        jLabel11.setOpaque(true);
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 270, 160, 30));
-
         jButton4.setBackground(new java.awt.Color(237, 74, 65));
         jButton4.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
@@ -208,7 +225,7 @@ public class updateMedicine extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 120, 40));
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 380, 120, 40));
 
         jButton5.setBackground(new java.awt.Color(87, 191, 109));
         jButton5.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -221,17 +238,8 @@ public class updateMedicine extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 330, 120, 40));
-
-        UMstatus.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        UMstatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Available", "Not available" }));
-        UMstatus.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                UMstatusKeyPressed(evt);
-            }
-        });
-        jPanel2.add(UMstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, 190, 30));
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 250, 190, 10));
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 380, 120, 40));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 190, 20));
 
         UMmedicineempty.setFont(new java.awt.Font("Poppins", 2, 10)); // NOI18N
         UMmedicineempty.setForeground(new java.awt.Color(237, 74, 65));
@@ -241,7 +249,7 @@ public class updateMedicine extends javax.swing.JFrame {
         UMquantityempty.setForeground(new java.awt.Color(237, 74, 65));
         jPanel2.add(UMquantityempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 190, 20));
         jPanel2.add(UMdateRempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 190, 10));
-        jPanel2.add(UMdateEempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 190, 10));
+        jPanel2.add(UMdateEempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 190, 20));
 
         jLabel9.setBackground(new java.awt.Color(10, 46, 54));
         jLabel9.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -251,131 +259,177 @@ public class updateMedicine extends javax.swing.JFrame {
         jLabel9.setOpaque(true);
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 160, 30));
 
-        UMidmedicine.setEditable(false);
-        UMidmedicine.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        UMidmedicine.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        UMidmedicine.setPreferredSize(new java.awt.Dimension(60, 20));
-        UMidmedicine.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UMidmedicineActionPerformed(evt);
-            }
-        });
-        UMidmedicine.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                UMidmedicineKeyPressed(evt);
-            }
-        });
-        jPanel2.add(UMidmedicine, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 190, 30));
-
         UMdateR.setDateFormatString("yyyy-MM-d");
         jPanel2.add(UMdateR, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 170, 190, 30));
 
         UMdateE.setDateFormatString("yyyy-MM-d");
         jPanel2.add(UMdateE, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 220, 190, 30));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 750, 400));
+        jLabel10.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel10.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSTUDID.png"))); // NOI18N
+        jLabel10.setText("Description");
+        jLabel10.setOpaque(true);
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 270, 130, 30));
+
+        UMdescription.setColumns(5);
+        UMdescription.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        UMdescription.setRows(3);
+        UMdescription.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                UMdescriptionKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(UMdescription);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, 190, 80));
+
+        UMdescriptionempty.setFont(new java.awt.Font("Poppins", 2, 10)); // NOI18N
+        UMdescriptionempty.setForeground(new java.awt.Color(237, 74, 65));
+        jPanel2.add(UMdescriptionempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 190, 20));
+
+        UMidmedicine.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        UMidmedicine.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(UMidmedicine, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 190, 30));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 750, 430));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void UMmedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UMmedicineActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_UMmedicineActionPerformed
+    private void UMdateRKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMdateRKeyPressed
+        UMdateRempty.setText("");
+    }//GEN-LAST:event_UMdateRKeyPressed
+
+    private void UMdateEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMdateEKeyPressed
+        UMdateEempty.setText("");
+    }//GEN-LAST:event_UMdateEKeyPressed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d");
+
+        java.util.Date dateR = UMdateR.getDate();
+        java.util.Date dateE = UMdateE.getDate();
+
+        if (UMmedicine.getText().trim().isEmpty() && UMquantity.getText().trim().isEmpty() && UMdescription.getText().trim().isEmpty()) //error di makuha yung sa getdate   && AMdateR.getText().trim().isEmpty() && AMdateE.getText().trim().isEmpty()&& AMstatus.getSelectedItem().toString().isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Enter all details before proceeding");
+            UMmedicineempty.setText("Medicine is empty");
+            UMquantityempty.setText("Quanity is empty");
+            //            AMdateRempty.setText("Date Recieved is empty");
+            //           AMdateEempty.setText("Date Expired is empty");
+            UMdescriptionempty.setText("Description is empty");
+
+        } else if (UMmedicine.getText().trim().isEmpty()) {
+            UMmedicineempty.setText("Medicine is empty");
+        } else if (UMquantity.getText().trim().isEmpty()) {
+            UMquantityempty.setText("Quantity is empty");
+        } else if (UMdescription.getText().trim().isEmpty()) {
+            UMdescriptionempty.setText("Description is empty");
+            //           } else if (AMdateR.getJCalendar().toString().isEmpty()) {
+            //              AMdateRempty.setText("Date recieved is empty");
+            //            } else if (AMdateE.getText().trim().isEmpty()) {
+            //                AMdateEempty.setText("Date Expired name is empty");
+            //           } else if (AMstatus.getSelectedItem().toString().isEmpty()) {
+            //               AMstatusempty.setText("status is empty");
+        } else if (sdf.format(dateR).equals(sdf.format(dateE))) {
+            JOptionPane.showMessageDialog(null, "Date input is Same");
+        } else if (dateR.after(dateE)) {
+            JOptionPane.showMessageDialog(null, "Date Recieved is ahead of Date Expired");
+
+        } else {
+            String sql = null;
+            PreparedStatement pst = null;
+
+            try {
+                sql = "update clinicmanagement.inventory  set  medicinename=?, quantity=?, daterecieved=? ,expirationdate=?,description=? where id=?";
+                pst = conn.prepareStatement(sql);
+
+                pst.setString(1, UMmedicine.getText());
+                pst.setInt(2, Integer.parseInt(UMquantity.getText()));
+                pst.setString(3, ((JTextField) UMdateR.getDateEditor().getUiComponent()).getText());
+                pst.setString(4, ((JTextField) UMdateE.getDateEditor().getUiComponent()).getText());
+                pst.setString(5, UMdescription.getText());
+                pst.setInt(6, Integer.parseInt(UMidmedicine.getText()));
+
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "Successfully Update", "Success", JOptionPane.INFORMATION_MESSAGE);             
+                pst.close();
+                rs.close();
+                
+                Inventory inventVar = new Inventory();
+                inventVar.setVisible(true);
+                setVisible(false);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "MedicineName is already use");
+            }
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Inventory viewP = new Inventory();
+        viewP.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void UMquantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMquantityKeyTyped
+
+    }//GEN-LAST:event_UMquantityKeyTyped
+
+    private void UMquantityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMquantityKeyReleased
+        String PATTERN = "^(?!0)[0-9]{0,6}$";
+        Pattern patt = Pattern.compile(PATTERN);
+        Matcher match = patt.matcher(UMquantity.getText());
+        if (!match.matches()) {
+
+            JOptionPane.showMessageDialog(null, "Invalid Input");
+            UMquantityempty.setText("Only 6 digits can input and Dont input letters");
+            UMquantity.setText("");
+
+        } else {
+
+        }
+    }//GEN-LAST:event_UMquantityKeyReleased
+
+    private void UMquantityKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMquantityKeyPressed
+        UMquantityempty.setText("");
+    }//GEN-LAST:event_UMquantityKeyPressed
 
     private void UMquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UMquantityActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UMquantityActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void UMmedicineKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMmedicineKeyReleased
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-         if (UMmedicine.getText().trim().isEmpty() && UMquantity.getText().trim().isEmpty()) 
-//error di makuha yung sa getdate   && AMdateR.getText().trim().isEmpty() && AMdateE.getText().trim().isEmpty()&& AMstatus.getSelectedItem().toString().isEmpty()) 
-            
-       {
-            UMmedicineempty.setText("Medicine is empty");
-            UMquantityempty.setText("Quanity name is empty");
-//            AMdateRempty.setText("Date Recieved is empty");
-//           AMdateEempty.setText("Date Expired is empty");
-//           AMstatusempty.setText("select status is empty");
-
-            
-             } else if (UMmedicine.getText().trim().isEmpty()) {
-               UMmedicineempty.setText("Medicine is empty");
-            } else if (UMquantity.getText().trim().isEmpty()) {
-               UMquantityempty.setText("Quantity is empty");
-//           } else if (AMdateR.getJCalendar().toString().isEmpty()) {
-//              AMdateRempty.setText("Date recieved is empty");
-//            } else if (AMdateE.getText().trim().isEmpty()) {
-//                AMdateEempty.setText("Date Expired name is empty");
-//           } else if (AMstatus.getSelectedItem().toString().isEmpty()) {
-//               AMstatusempty.setText("status is empty");
-            }else{
-            String sql=null;
-        PreparedStatement pst=null;
-
-         try{
-            sql = "update clinicmanagement.inventory  set  medicinename=?, quantity=?, daterecieved=? ,expirationdate=?,status=? where id=?";
-            pst = conn.prepareStatement(sql);
-            
-                    
-               pst.setString(1, UMmedicine.getText()); 
-               pst.setInt(2, Integer.parseInt(UMquantity.getText()));
-               pst.setString(3, ((JTextField)UMdateR.getDateEditor().getUiComponent()).getText());
-               pst.setString(4, ((JTextField)UMdateE.getDateEditor().getUiComponent()).getText());
-               pst.setString(5,   UMstatus.getSelectedItem().toString());
-               pst.setInt(6, Integer.parseInt(UMidmedicine.getText()));
-              
-               pst.executeUpdate();
-
-           
-              JOptionPane.showMessageDialog(null,"Successfully Update","Success",JOptionPane.INFORMATION_MESSAGE);
-               new Inventory().update();
-                pst.close();
-                rs.close();
-                setVisible(false);
-                new Inventory().setVisible(true);
-                
-               
-       }
-       catch(Exception e)
-       {
-        JOptionPane.showMessageDialog(null, "MedicineName is already use");
-       }     
-            }
-    
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void UMstatusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMstatusKeyPressed
-        
-    }//GEN-LAST:event_UMstatusKeyPressed
+    }//GEN-LAST:event_UMmedicineKeyReleased
 
     private void UMmedicineKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMmedicineKeyPressed
         UMmedicineempty.setText("");
     }//GEN-LAST:event_UMmedicineKeyPressed
 
-    private void UMquantityKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMquantityKeyPressed
-         UMquantityempty.setText("");
-    }//GEN-LAST:event_UMquantityKeyPressed
-
-    private void UMdateRKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMdateRKeyPressed
-         UMdateRempty.setText("");
-    }//GEN-LAST:event_UMdateRKeyPressed
-
-    private void UMdateEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMdateEKeyPressed
-         UMdateEempty.setText("");
-    }//GEN-LAST:event_UMdateEKeyPressed
-
-    private void UMidmedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UMidmedicineActionPerformed
+    private void UMmedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UMmedicineActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_UMidmedicineActionPerformed
+    }//GEN-LAST:event_UMmedicineActionPerformed
 
-    private void UMidmedicineKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMidmedicineKeyPressed
-        UMmedicineempty.setText("");
-    }//GEN-LAST:event_UMidmedicineKeyPressed
+    private void UMdescriptionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMdescriptionKeyPressed
+        UMdescriptionempty.setText("");
+    }//GEN-LAST:event_UMdescriptionKeyPressed
+
+    private void UMmedicineKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UMmedicineKeyTyped
+        //Letter only 
+//        if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
+//        evt.consume();
+//        JOptionPane.showMessageDialog(null, "Please Input only Letter");
+//    } else if (UMmedicine.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
+//            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+//    }
+    }//GEN-LAST:event_UMmedicineKeyTyped
 
     /**
      * @param args the command line arguments
@@ -417,16 +471,17 @@ public class updateMedicine extends javax.swing.JFrame {
     private javax.swing.JLabel UMdateEempty;
     private com.toedter.calendar.JDateChooser UMdateR;
     private javax.swing.JLabel UMdateRempty;
-    private javax.swing.JTextField UMidmedicine;
+    private javax.swing.JTextArea UMdescription;
+    private javax.swing.JLabel UMdescriptionempty;
+    private javax.swing.JLabel UMidmedicine;
     private javax.swing.JTextField UMmedicine;
     private javax.swing.JLabel UMmedicineempty;
     private javax.swing.JTextField UMquantity;
     private javax.swing.JLabel UMquantityempty;
-    private javax.swing.JComboBox UMstatus;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -435,5 +490,6 @@ public class updateMedicine extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
