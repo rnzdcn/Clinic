@@ -504,16 +504,16 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_searchKeyReleased
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-//       int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?","Confirm",
-//                JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
-//        if(response==JOptionPane.YES_OPTION){
-//            new signup().setVisible(true);
-//            dispose();
-//        }
-        this.toBack();
-        logout l = new logout();
-        l.setVisible(true);
-        l.toFront();
+       int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?","Confirm",
+                JOptionPane.YES_NO_OPTION ,JOptionPane.QUESTION_MESSAGE);
+        if(response==JOptionPane.YES_OPTION){
+            new signup().setVisible(true);
+            dispose();
+        }
+//        this.toBack();
+//        logout l = new logout();
+//        l.setVisible(true);
+//        l.toFront();
 
 
     }//GEN-LAST:event_jButton7ActionPerformed
