@@ -91,35 +91,9 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
         getRootPane().
-                setBorder(BorderFactory.createLineBorder(Color.WHITE));
+                setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
-    public void printComponent(Component component) {
-        PrinterJob pj = PrinterJob.getPrinterJob();
-        pj.setJobName(" Print Component ");
-
-        pj.setPrintable(new Printable() {
-            public int print(Graphics pg, PageFormat pf, int pageNum) {
-                if (pageNum > 0) {
-                    return Printable.NO_SUCH_PAGE;
-                }
-
-                Graphics2D g2 = (Graphics2D) pg;
-                g2.translate(pf.getImageableX(), pf.getImageableY());
-                component.print(g2);
-                return Printable.PAGE_EXISTS;
-            }
-        });
-        if (pj.printDialog() == false) {
-            return;
-        }
-
-        try {
-            pj.print();
-        } catch (PrinterException ex) {
-            // handle exception
-        }
-    }
     public void printComponent() {
 
         PrinterJob pj = PrinterJob.getPrinterJob();
@@ -128,13 +102,15 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         pj.setPrintable(new Printable() {
             
             public int print(Graphics pg, PageFormat pf, int pageNum) {
+                pf.setOrientation(PageFormat.PORTRAIT);
                 if (pageNum > 0) {
                     return Printable.NO_SUCH_PAGE;
                 }
                 Graphics2D g2 = (Graphics2D) pg;
-                g2.scale(pf.getImageableWidth()/jPanel2.getWidth(), pf.getImageableHeight()/jPanel2.getHeight());
-                g2.translate(pf.getImageableX(), pf.getImageableY());
-                jPanel2.print(g2);
+//                g2.scale(pf.getImageableWidth()/jPanel2.getWidth(), pf.getImageableHeight()/jPanel2.getHeight());
+                g2.translate(pf.getImageableX()+10, pf.getImageableY()+170);
+                g2.scale(0.80, 0.80);
+                jPanel2.paint(g2);
                 return Printable.PAGE_EXISTS;
             }
         });
@@ -178,8 +154,6 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         viewpatientfirst = new javax.swing.JLabel();
         viewpatientstudid = new javax.swing.JLabel();
         viewpatientlast = new javax.swing.JLabel();
@@ -192,6 +166,11 @@ public class viewpatientsInformation extends javax.swing.JDialog {
         viewpatientbed = new javax.swing.JLabel();
         viewpatientsick = new javax.swing.JLabel();
         viewpatientguardian = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -227,129 +206,173 @@ public class viewpatientsInformation extends javax.swing.JDialog {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jPanel2.setBackground(new java.awt.Color(10, 46, 54));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(750, 360));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel5.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSTUDID.png"))); // NOI18N
         jLabel5.setText("Student ID:");
         jLabel5.setOpaque(true);
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 130, 30));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 130, 30));
 
-        jLabel6.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewFIRST.png"))); // NOI18N
         jLabel6.setText("First Name:");
         jLabel6.setOpaque(true);
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 130, 30));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 130, 30));
 
-        jLabel7.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewLAST.png"))); // NOI18N
         jLabel7.setText("Last Name:");
         jLabel7.setOpaque(true);
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 130, 30));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 130, 30));
 
-        jLabel8.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewMIDDLE.png"))); // NOI18N
         jLabel8.setText("Middle Name:");
         jLabel8.setOpaque(true);
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 130, 30));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 130, 30));
 
-        jLabel10.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewGENDER.png"))); // NOI18N
         jLabel10.setText("Gender:");
         jLabel10.setOpaque(true);
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 130, 30));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 130, 30));
 
-        jLabel11.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewAGE.png"))); // NOI18N
         jLabel11.setText("Age:");
         jLabel11.setOpaque(true);
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 130, 30));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 130, 30));
 
-        jLabel12.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewSICK.png"))); // NOI18N
         jLabel12.setText("Sick/Illness:");
         jLabel12.setOpaque(true);
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 230, 130, 30));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, 130, 30));
 
-        jLabel13.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
         jLabel13.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewBED.png"))); // NOI18N
         jLabel13.setText("Bed Number:");
         jLabel13.setOpaque(true);
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, 130, 30));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 130, 30));
 
-        jLabel9.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewGUARDIAN.png"))); // NOI18N
         jLabel9.setText("Guardian Contact Number:");
         jLabel9.setOpaque(true);
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 210, 30));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 320, 210, 30));
 
-        jLabel14.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel14.setBackground(new java.awt.Color(255, 255, 255));
         jLabel14.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewTIME.png"))); // NOI18N
         jLabel14.setText("Time Admit:");
         jLabel14.setOpaque(true);
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, 130, 30));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 170, 130, 30));
 
-        jLabel15.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel15.setBackground(new java.awt.Color(255, 255, 255));
         jLabel15.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewCONTACT.png"))); // NOI18N
         jLabel15.setText("Contact Number:");
         jLabel15.setOpaque(true);
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 140, 30));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, 140, 30));
 
-        jLabel16.setBackground(new java.awt.Color(10, 46, 54));
+        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
         jLabel16.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/addnewpatientsimage/addnewCALENDAR.png"))); // NOI18N
         jLabel16.setText("Date:");
         jLabel16.setOpaque(true);
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 130, 30));
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 130, 30));
 
-        jButton3.setBackground(new java.awt.Color(87, 191, 109));
-        jButton3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
-        jButton3.setText("Print");
-        jButton3.setBorder(null);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 340, 120, 40));
+        viewpatientfirst.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientfirst.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewpatientfirst.setToolTipText("");
+        jPanel2.add(viewpatientfirst, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 180, 30));
+
+        viewpatientstudid.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientstudid.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewpatientstudid.setToolTipText("");
+        jPanel2.add(viewpatientstudid, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 180, 30));
+
+        viewpatientlast.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientlast.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewpatientlast.setToolTipText("");
+        jPanel2.add(viewpatientlast, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 180, 30));
+
+        viewpatientmiddle.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientmiddle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewpatientmiddle.setToolTipText("");
+        jPanel2.add(viewpatientmiddle, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 180, 30));
+
+        viewpatientage.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewpatientage.setToolTipText("");
+        jPanel2.add(viewpatientage, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, 180, 30));
+
+        viewpatientgender.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientgender.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewpatientgender.setToolTipText("");
+        jPanel2.add(viewpatientgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, 180, 30));
+
+        viewpatientdate.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(viewpatientdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 70, 190, 30));
+
+        viewpatientcontact.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientcontact.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(viewpatientcontact, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, 190, 30));
+
+        viewpatienttime.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatienttime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(viewpatienttime, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 170, 190, 30));
+
+        viewpatientbed.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientbed.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(viewpatientbed, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, 190, 30));
+
+        viewpatientsick.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientsick.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(viewpatientsick, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 270, 190, 30));
+
+        viewpatientguardian.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
+        viewpatientguardian.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(viewpatientguardian, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 320, 130, 30));
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("(Patient Information)");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 720, 30));
+
+        jLabel3.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Cavite State University - Silang Campus");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 720, 30));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 750, 360));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jButton4.setBackground(new java.awt.Color(237, 74, 65));
         jButton4.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -363,75 +386,40 @@ public class viewpatientsInformation extends javax.swing.JDialog {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, 120, 40));
 
-        viewpatientfirst.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientfirst.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientfirst.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewpatientfirst.setToolTipText("");
-        jPanel2.add(viewpatientfirst, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 180, 30));
+        jButton3.setBackground(new java.awt.Color(87, 191, 109));
+        jButton3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clinic/image/printer.png"))); // NOI18N
+        jButton3.setText("Print");
+        jButton3.setBorder(null);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        viewpatientstudid.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientstudid.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientstudid.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewpatientstudid.setToolTipText("");
-        jPanel2.add(viewpatientstudid, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 180, 30));
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(465, Short.MAX_VALUE)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
 
-        viewpatientlast.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientlast.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientlast.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewpatientlast.setToolTipText("");
-        jPanel2.add(viewpatientlast, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 180, 30));
-
-        viewpatientmiddle.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientmiddle.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientmiddle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewpatientmiddle.setToolTipText("");
-        jPanel2.add(viewpatientmiddle, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 180, 30));
-
-        viewpatientage.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientage.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientage.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewpatientage.setToolTipText("");
-        jPanel2.add(viewpatientage, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, 180, 30));
-
-        viewpatientgender.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientgender.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientgender.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewpatientgender.setToolTipText("");
-        jPanel2.add(viewpatientgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 180, 30));
-
-        viewpatientdate.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientdate.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientdate.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(viewpatientdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 190, 30));
-
-        viewpatientcontact.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientcontact.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientcontact.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(viewpatientcontact, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 80, 190, 30));
-
-        viewpatienttime.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatienttime.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatienttime.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(viewpatienttime, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 130, 190, 30));
-
-        viewpatientbed.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientbed.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientbed.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(viewpatientbed, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 180, 190, 30));
-
-        viewpatientsick.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientsick.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientsick.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(viewpatientsick, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 230, 190, 30));
-
-        viewpatientguardian.setFont(new java.awt.Font("Poppins Light", 0, 12)); // NOI18N
-        viewpatientguardian.setForeground(new java.awt.Color(255, 255, 255));
-        viewpatientguardian.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(viewpatientguardian, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 280, 130, 30));
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 750, 400));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 750, 80));
 
         pack();
         setLocationRelativeTo(null);
@@ -496,6 +484,8 @@ public class viewpatientsInformation extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -503,6 +493,7 @@ public class viewpatientsInformation extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel viewpatientage;
     private javax.swing.JLabel viewpatientbed;
     private javax.swing.JLabel viewpatientcontact;
