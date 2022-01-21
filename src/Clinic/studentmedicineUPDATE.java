@@ -6,6 +6,8 @@
 package Clinic;
 
 import static Clinic.editPatients.tmp;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.event.KeyEvent;
@@ -13,6 +15,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -48,6 +51,8 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
                 String edit3 = rs.getString("lastname");
                 USlast.setText(edit3);
                 Date edit4 = rs.getDate("date");
+//                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+//                tatatime.setText(sdf.format(edit4.getTime()));
                 USdate.setDate(edit4);
                 String edit5 = rs.getString("time");
                 UStime.setText(edit5);
@@ -76,6 +81,10 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
 
         getRootPane().
                 setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
+        //disable the DATE input
+        JDateChooser choser = new JDateChooser();
+        USdate.setEnabled(false);
 
     }
 
@@ -446,6 +455,7 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
     }//GEN-LAST:event_USmedicineActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
         if (USstudID.getText().trim().isEmpty() && USfirst.getText().trim().isEmpty() && USlast.getText().trim().isEmpty()
                 && UStime.getText().trim().isEmpty() && USmedicine.getText().trim().isEmpty() && USdescription.getText().trim().isEmpty()
                 && ((JTextField) USdate.getDateEditor().getUiComponent()).getText().isEmpty()) //        && AStime.getDate().toString().isEmpty()
@@ -453,8 +463,8 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
             USstudIDempty.setText("Student ID is empty");
             USfirstempty.setText("first name is empty");
             USlastempty.setText("last name is empty");
-            USdateempty.setText("date is empty");
-            UStimeempty.setText("time number is empty");
+//            USdateempty.setText("date is empty");
+//            UStimeempty.setText("time number is empty");
             USdescriptionempty.setText("description number is empty");
 
         } else if (USstudID.getText().trim().isEmpty()) {
@@ -464,6 +474,7 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
         } else if (USlast.getText().trim().isEmpty()) {
             USlastempty.setText("last name is empty");
         } else if (((JTextField) USdate.getDateEditor().getUiComponent()).getText().isEmpty()) {
+//        } else if (USdate.getText().trim().isEmpty()) {
             USdateempty.setText("Date recieved is empty");
         } else if (UStime.getText().trim().isEmpty()) {
             UStimeempty.setText("tine is empty");
@@ -476,14 +487,17 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
             PreparedStatement pst = null;
 
             try {
+
                 //di pa nababago yung sa first column edit pero tmp lang ilalagay
                 sql = "update clinicmanagement.studentmedicine  set  studentid=?, firstname=?, lastname=? ,date=?,time=? ,medicine=? , description=?, quantity=? where studreportno=?";
+//                sql = "update clinicmanagement.studentmedicine  set  studentid=?, firstname=?, lastname=? ,medicine=? , description=?, quantity=? where studreportno=?";
                 pst = conn.prepareStatement(sql);
 
                 pst.setInt(1, Integer.parseInt(USstudID.getText()));
                 pst.setString(2, USfirst.getText());
                 pst.setString(3, USlast.getText());
                 pst.setString(4, ((JTextField) USdate.getDateEditor().getUiComponent()).getText());
+//                pst.setString(4, USdate.getText());
                 pst.setString(5, UStime.getText());
                 pst.setString(6, USmedicine.getText());
                 pst.setString(7, USdescription.getText());
@@ -492,7 +506,7 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
 
                 pst.executeUpdate();
 
-                JOptionPane.showMessageDialog(null, "Student Medicine Updated", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Student Medical Record have been updated", "Success", JOptionPane.INFORMATION_MESSAGE);
                 pst.close();
                 rs.close();
 
@@ -580,7 +594,7 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
         //Letter only 
         if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Please Input only Letter");
+
         } else if (USfirst.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
             evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
         }
@@ -590,7 +604,7 @@ public class studentmedicineUPDATE extends javax.swing.JDialog {
         //Letter only 
         if (!Character.isAlphabetic(evt.getKeyChar()) && !Character.isSpaceChar(evt.getKeyChar())) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Please Input only Letter");
+
         } else if (USlast.getText().trim().length() == 0 && Character.isLowerCase(evt.getKeyChar())) {
             evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
         }

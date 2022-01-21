@@ -513,6 +513,7 @@ public class StudentMedicineADD extends javax.swing.JDialog {
         ASquantityempty.setForeground(new java.awt.Color(237, 74, 65));
         jPanel2.add(ASquantityempty, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 190, 20));
 
+        ASquantity.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         ASquantity.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         ASquantity.setPreferredSize(new java.awt.Dimension(60, 20));
         ASquantity.addActionListener(new java.awt.event.ActionListener() {
@@ -526,6 +527,9 @@ public class StudentMedicineADD extends javax.swing.JDialog {
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 ASquantityKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ASquantityKeyTyped(evt);
             }
         });
         jPanel2.add(ASquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 190, 190, 30));
@@ -833,6 +837,10 @@ public class StudentMedicineADD extends javax.swing.JDialog {
             evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
         }
     }//GEN-LAST:event_ASlastKeyTyped
+
+    private void ASquantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ASquantityKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ASquantityKeyTyped
 
     /**
      * @param args the command line arguments
