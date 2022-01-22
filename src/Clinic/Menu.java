@@ -8,10 +8,8 @@ package Clinic;
 import static Clinic.Inventory.Itable;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import static java.awt.Font.BOLD;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
@@ -25,16 +23,11 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.BorderFactory;
-import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.border.AbstractBorder;
-import javax.swing.border.Border;
 import net.proteanit.sql.DbUtils;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
@@ -56,10 +49,13 @@ public class Menu extends javax.swing.JFrame {
     Statement st = null;
 
     public Menu() {
+        
         initComponents();
         conn = connection.ConnecrDb();
         this.setLocationRelativeTo(null);
 
+        
+        
         currentDate();
         showTime();
 
@@ -100,13 +96,14 @@ public class Menu extends javax.swing.JFrame {
             Itable.setModel(DbUtils.resultSetToTableModel(rs));
             int k1 = Itable.getRowCount();
 
+            
             DefaultPieDataset dataset2 = new DefaultPieDataset();
-            dataset2.setValue("Headache", new Integer(f1));
-            dataset2.setValue("Cold", new Integer(g1));
-            dataset2.setValue("Diarrhea", new Integer(h1));
-            dataset2.setValue("Flu", new Integer(i1));
-            dataset2.setValue("Allergy", new Integer(j1));
-            dataset2.setValue("Stomachache", new Integer(k1));
+            dataset2.setValue("Headache", Integer.valueOf(f1));
+            dataset2.setValue("Cold", Integer.valueOf(g1));
+            dataset2.setValue("Diarrhea", Integer.valueOf(h1));
+            dataset2.setValue("Flu", Integer.valueOf(i1));
+            dataset2.setValue("Allergy", Integer.valueOf(j1));
+            dataset2.setValue("Stomachache", Integer.valueOf(k1));
 
             JFreeChart chart2 = ChartFactory.createPieChart3D("Common Student Illness", dataset2, true, true, true);
             PiePlot P = (PiePlot) chart2.getPlot();
